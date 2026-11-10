@@ -110,7 +110,7 @@ export default function ExploreCollection({
               key={item.id}
               href={item.href}
               aria-label={`${item.category} Collection`}
-              className="group block relative w-full aspect-[1140/1380] rounded-[20px] overflow-hidden shadow-[0_6px_14px_rgba(110,50,50,0.22)] hover:shadow-[0_14px_30px_rgba(110,50,50,0.28)] transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#AC7058]/50"
+              className="group block relative w-full aspect-1140/1380 rounded-[20px] overflow-hidden shadow-[0_6px_14px_rgba(110,50,50,0.22)] hover:shadow-[0_14px_30px_rgba(110,50,50,0.28)] transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#AC7058]/50"
             >
               <Image
                 src={item.image}
@@ -137,14 +137,14 @@ export default function ExploreCollection({
               640: { slidesPerView: 2.1, spaceBetween: 18 },
             }}
             onSlideChange={(swiper) => setMobileActiveIndex(swiper.activeIndex)}
-            className="w-full !overflow-visible"
+            className="w-full overflow-visible!"
           >
             {collections.map((item) => (
-              <SwiperSlide key={item.id} className="!h-auto select-none">
+              <SwiperSlide key={item.id} className="h-auto! select-none">
                 <Link
                   href={item.href}
                   aria-label={`${item.category} Collection`}
-                  className="group block relative w-full aspect-[1140/1380] rounded-[20px] overflow-hidden shadow-[0_6px_14px_rgba(110,50,50,0.22)] active:scale-[0.99] transition-all duration-300"
+                  className="group block relative w-full aspect-1140/1380 rounded-[20px] overflow-hidden shadow-[0_6px_14px_rgba(110,50,50,0.22)] active:scale-[0.99] transition-all duration-300"
                 >
                   <Image
                     src={item.image}

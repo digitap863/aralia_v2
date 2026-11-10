@@ -8,6 +8,7 @@ import ExploreCollection from "@/components/ExploreCollection";
 import BrandPromise from "@/components/BrandPromise";
 import WhyAralia from "@/components/WhyAralia";
 import SizeGuide from "@/components/SizeGuide";
+import NatureBanner from "@/components/NatureBanner";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <BrandPromise />
       <WhyAralia />
       <SizeGuide />
+      <NatureBanner />
     </main>
   );
 }

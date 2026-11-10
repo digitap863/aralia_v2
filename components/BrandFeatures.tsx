@@ -57,7 +57,7 @@ export default function BrandFeatures() {
     <section className="w-full bg-[#f2e3d8] border-y border-[#ebd8cc]/60 select-none overflow-hidden">
       
       {/* Desktop View: Full 5-Column Grid with Vertical Dividers */}
-      <div className="hidden lg:block max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-7 sm:py-8 lg:py-9">
+      <div className="hidden lg:block max-w-350 mx-auto px-5 sm:px-8 lg:px-12 py-7 sm:py-8 lg:py-9">
         <div className="grid grid-cols-5 items-center">
           {features.map((feature, idx) => (
             <div
@@ -70,7 +70,7 @@ export default function BrandFeatures() {
               {idx < features.length - 1 && (
                 <div
                   aria-hidden="true"
-                  className="absolute right-0 top-1/2 -translate-y-1/2 h-14 w-[1px] bg-[#d9c5ba] pointer-events-none"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 h-14 w-px bg-[#d9c5ba] pointer-events-none"
                 />
               )}
 
@@ -104,11 +104,11 @@ export default function BrandFeatures() {
         {/* Soft edge gradient fades */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 sm:w-10 bg-gradient-to-r from-[#f2e3d8] to-transparent z-10"
+          className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 sm:w-10 bg-linear-to-r from-[#f2e3d8] to-transparent z-10"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 sm:w-10 bg-gradient-to-l from-[#f2e3d8] to-transparent z-10"
+          className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 sm:w-10 bg-linear-to-l from-[#f2e3d8] to-transparent z-10"
         />
 
         {/* Marquee ticker track */}
@@ -140,7 +140,7 @@ export default function BrandFeatures() {
               {/* Divider between marquee items */}
               <div
                 aria-hidden="true"
-                className="h-3 w-[1px] bg-[#d9c5ba] ml-3 sm:ml-4 shrink-0"
+                className="h-3 w-px bg-[#d9c5ba] ml-3 sm:ml-4 shrink-0"
               />
             </div>
           ))}

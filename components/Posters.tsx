@@ -3,7 +3,7 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
@@ -13,7 +13,6 @@ export interface PosterItem {
   image: string;
   alt: string;
   href: string;
-  hasVideo?: boolean;
 }
 
 // Single unified list of poster items (ready for dynamic CMS / database integration)
@@ -23,7 +22,6 @@ const posters: PosterItem[] = [
     image: "/images/HomePage/Posters/p1.webp",
     alt: "Aralia - One feeling. Endless expressions.",
     href: "/collections/expressive",
-    hasVideo: true,
   },
   {
     id: "poster-2",
@@ -36,7 +34,6 @@ const posters: PosterItem[] = [
     image: "/images/HomePage/Posters/p1.webp",
     alt: "Aralia Silk Touch Collection",
     href: "/collections/silk-touch",
-    hasVideo: true,
   },
   {
     id: "poster-4",
@@ -49,7 +46,6 @@ const posters: PosterItem[] = [
     image: "/images/HomePage/Posters/p1.webp",
     alt: "Comfort in Every Movement",
     href: "/collections/movement",
-    hasVideo: true,
   },
 ];
 
@@ -138,10 +134,10 @@ export default function Posters() {
             onSlideChange={(swiper) => updateSnapInfo(swiper)}
             onBreakpoint={(swiper) => updateSnapInfo(swiper)}
             onResize={(swiper) => updateSnapInfo(swiper)}
-            className="w-full !overflow-hidden"
+            className="w-full overflow-hidden!"
           >
             {posters.map((poster) => (
-              <SwiperSlide key={poster.id} className="!h-auto select-none">
+              <SwiperSlide key={poster.id} className="h-auto! select-none">
                 <Link
                   href={poster.href}
                   className="group block relative w-full aspect-738/341 rounded-2xl sm:rounded-3xl overflow-hidden bg-[#eee5dd] shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
@@ -155,15 +151,6 @@ export default function Posters() {
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.02] pointer-events-none select-none"
                   />
-
-                  {/* Video Play Overlay */}
-                  {poster.hasVideo && (
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/10">
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/90 backdrop-blur-xs text-[#9f6e5a] flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
-                        <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-current ml-0.5" />
-                      </div>
-                    </div>
-                  )}
                 </Link>
               </SwiperSlide>
             ))}
