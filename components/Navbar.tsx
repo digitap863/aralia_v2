@@ -60,7 +60,7 @@ export default function Navbar() {
   return (
     <header className="w-full sticky top-0 z-50 bg-white border-b border-neutral-100 shadow-[0_1px_3px_rgba(0,0,0,0.03)] font-sans">
       {/* Top Announcement Bar */}
-      <div className="bg-[#212224] text-neutral-200 text-xs sm:text-[13px] tracking-wide py-2.5 px-4 text-center font-normal">
+      <div className="bg-[#212224] text-neutral-200 text-xs sm:text-[13px] tracking-wide py-2 px-4 text-center font-normal">
         <p className="inline-block transition-opacity duration-300">
           Free Shipping Over ₹2000 - Use code <span className="font-semibold text-white">SUMMER20</span>
         </p>
@@ -68,7 +68,7 @@ export default function Navbar() {
 
       {/* Main Navbar */}
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 sm:h-24 md:h-28">
+        <div className="flex items-center justify-between h-16 sm:h-18 md:h-20">
           
           {/* Mobile Menu Button - visible on screens below lg */}
           <div className="flex items-center lg:hidden flex-1">
@@ -143,12 +143,12 @@ export default function Navbar() {
           {/* Center Brand Logo */}
           <div className="flex justify-center items-center px-4 shrink-0">
             <Link href="/" className="flex items-center justify-center group" aria-label="Aralia Home">
-              <div className="relative h-16 sm:h-20 md:h-24 w-36 sm:w-44 md:w-52 flex items-center justify-center transition-transform duration-200 group-hover:scale-[1.02]">
+              <div className="relative h-12 sm:h-14 md:h-16 w-32 sm:w-38 md:w-44 flex items-center justify-center transition-transform duration-200 group-hover:scale-[1.02]">
                 <Image
                   src="/images/logo.webp"
                   alt="Aralia Logo"
                   fill
-                  sizes="(max-width: 768px) 150px, 208px"
+                  sizes="(max-width: 768px) 130px, 176px"
                   className="object-contain"
                   priority
                 />

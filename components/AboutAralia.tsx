@@ -7,7 +7,14 @@ import Link from "next/link";
 export default function AboutAralia() {
   return (
     <section className="relative w-8xl overflow-hidden bg-white select-none py-10 sm:py-12 lg:py-0 lg:h-130 xl:h-137.5 lg:max-h-150 flex items-center">
-      
+      <div
+  aria-hidden="true"
+  className="absolute inset-x-0 bottom-0 h-32 sm:h-44 md:h-56 pointer-events-none z-[1]"
+  style={{
+    background:
+      "linear-gradient(to bottom, rgba(247,247,245,0) 0%, rgba(247,247,245,0.6) 45%, #f7f7f5 100%)",
+  }}
+/>
       {/* 
         Right-side Silk & Lace Background:
         - Positioned on the right side

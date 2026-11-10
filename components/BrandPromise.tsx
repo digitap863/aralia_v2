@@ -11,13 +11,13 @@ export default function BrandPromise() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_45%_50%,rgba(120,86,72,0.3),transparent_70%)] pointer-events-none" />
 
       {/* Flowing Ribbon Image (Center) */}
-      <div className="absolute left-[34%] sm:left-[38%] md:left-[41%] lg:left-[43%] top-0 h-[105%] w-[180px] sm:w-[240px] md:w-[280px] lg:w-[340px] pointer-events-none select-none z-10 hidden sm:block">
+      <div className="absolute left-[32%] sm:left-[36%] md:left-[39%] lg:left-[41%] top-0 h-[115%] sm:h-[120%] w-[220px] sm:w-[285px] md:w-[340px] lg:w-[410px] pointer-events-none select-none z-10 hidden sm:block">
         <Image
           src="/images/HomePage/OurBrand/ribbon.webp"
           alt="Aralia Satin Ribbon"
           fill
           priority
-          sizes="(max-width: 768px) 240px, (max-width: 1024px) 280px, 340px"
+          sizes="(max-width: 768px) 285px, (max-width: 1024px) 340px, 410px"
           className="object-contain object-top opacity-95 drop-shadow-md"
         />
       </div>
