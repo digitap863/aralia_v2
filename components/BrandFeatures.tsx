@@ -2,8 +2,6 @@
 
 import React from "react";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
 
 export interface BrandFeature {
   id: string;
@@ -52,12 +50,15 @@ const features: BrandFeature[] = [
 ];
 
 export default function BrandFeatures() {
+  // Duplicated list for seamless infinite loop marquee
+  const marqueeFeatures = [...features, ...features];
+
   return (
     <section className="w-full bg-[#f2e3d8] border-y border-[#ebd8cc]/60 select-none overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-7 sm:py-8 lg:py-9">
-        
-        {/* Desktop View: Exact 5-Column Layout with Vertical Dividers */}
-        <div className="hidden lg:grid lg:grid-cols-5 items-center">
+      
+      {/* Desktop View: Full 5-Column Grid with Vertical Dividers */}
+      <div className="hidden lg:block max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-7 sm:py-8 lg:py-9">
+        <div className="grid grid-cols-5 items-center">
           {features.map((feature, idx) => (
             <div
               key={feature.id}
@@ -96,65 +97,56 @@ export default function BrandFeatures() {
             </div>
           ))}
         </div>
-
-        {/* Mobile & Tablet View: Smooth Swiper Carousel */}
-        <div className="block lg:hidden w-full">
-          <Swiper
-            spaceBetween={18}
-            slidesPerView={1.5}
-            speed={400}
-            grabCursor={true}
-            breakpoints={{
-              0: {
-                slidesPerView: 1.4,
-                spaceBetween: 14,
-              },
-              480: {
-                slidesPerView: 1.8,
-                spaceBetween: 16,
-              },
-              640: {
-                slidesPerView: 2.5,
-                spaceBetween: 18,
-              },
-              768: {
-                slidesPerView: 3.2,
-                spaceBetween: 20,
-              },
-            }}
-            className="w-full !overflow-visible"
-          >
-            {features.map((feature) => (
-              <SwiperSlide key={feature.id} className="!h-auto select-none">
-                <div className="flex flex-col justify-center px-3 py-1 border-r border-[#d9c5ba]/50 last:border-r-0">
-                  {/* Exact SVG Icon */}
-                  <div className="h-8 flex items-center mb-2">
-                    <Image
-                      src={feature.icon}
-                      alt={feature.alt}
-                      width={34}
-                      height={26}
-                      className="w-auto h-6 object-contain"
-                    />
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="font-sans font-semibold text-xs sm:text-[13px] text-[#221c1a] tracking-wider uppercase leading-snug">
-                    {feature.title}
-                  </h3>
-
-                  {/* Subtitle */}
-                  <p className="font-sans font-light text-[11px] text-[#5a4d46] mt-0.5 leading-snug">
-                    {feature.description}
-                  </p>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-
       </div>
+
+      {/* Mobile & Tablet View: Sleek Small-Height Infinite Marquee */}
+      <div className="block lg:hidden relative w-full overflow-hidden py-2.5 sm:py-3">
+        {/* Soft edge gradient fades */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 sm:w-10 bg-gradient-to-r from-[#f2e3d8] to-transparent z-10"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 sm:w-10 bg-gradient-to-l from-[#f2e3d8] to-transparent z-10"
+        />
+
+        {/* Marquee ticker track */}
+        <div
+          className="animate-brand-marquee flex items-center"
+          style={{ animationDuration: "20s" }}
+        >
+          {marqueeFeatures.map((feature, index) => (
+            <div
+              key={`${feature.id}-${index}`}
+              className="flex items-center gap-2 shrink-0 px-3.5 sm:px-4"
+            >
+              {/* Feature Icon */}
+              <div className="w-4 h-4 flex items-center justify-center shrink-0">
+                <Image
+                  src={feature.icon}
+                  alt={feature.alt}
+                  width={18}
+                  height={18}
+                  className="w-auto h-3.5 object-contain"
+                />
+              </div>
+
+              {/* Feature Title Only */}
+              <span className="font-sans font-semibold text-[10.5px] sm:text-[11px] text-[#221c1a] tracking-wider uppercase whitespace-nowrap">
+                {feature.title}
+              </span>
+
+              {/* Divider between marquee items */}
+              <div
+                aria-hidden="true"
+                className="h-3 w-[1px] bg-[#d9c5ba] ml-3 sm:ml-4 shrink-0"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
     </section>
   );
 }
-
