@@ -1,29 +1,55 @@
-import Hero from "@/components/Hero";
-import BrandFeatures from "@/components/BrandFeatures";
-import ShopByCategory from "@/components/ShopByCategory";
-import FeaturedProducts from "@/components/FeaturedProducts";
-import Posters from "@/components/Posters";
-import AboutAralia from "@/components/AboutAralia";
-import ExploreCollection from "@/components/ExploreCollection";
-import BrandPromise from "@/components/BrandPromise";
-import WhyAralia from "@/components/WhyAralia";
-import SizeGuide from "@/components/SizeGuide";
-import NatureBanner from "@/components/NatureBanner";
+import Hero from "@/components/homepage/Hero";
+import BrandFeatures from "@/components/homepage/BrandFeatures";
+import ShopByCategory from "@/components/homepage/ShopByCategory";
+import FeaturedProducts from "@/components/homepage/FeaturedProducts";
+import Posters from "@/components/homepage/Posters";
+import AboutAralia from "@/components/homepage/AboutAralia";
+import ExploreCollection from "@/components/homepage/ExploreCollection";
+import BrandPromise from "@/components/homepage/BrandPromise";
+import WhyAralia from "@/components/homepage/WhyAralia";
+import SizeGuide from "@/components/homepage/SizeGuide";
+import NatureBanner from "@/components/homepage/NatureBanner";
+import RevealOnScroll from "@/components/common/RevealOnScroll";
 
 export default function Home() {
   return (
-    <main className="flex-1">
+    <main className="flex-1 bg-white">
+      {/* Above-the-fold Hero loads immediately for peak LCP performance */}
       <Hero />
-      <ShopByCategory />
-      <BrandFeatures />
-      <FeaturedProducts />
-      <Posters />
-      <AboutAralia />
-      <ExploreCollection />
-      <BrandPromise />
-      <WhyAralia />
-      <SizeGuide />
-      <NatureBanner />
+
+      <RevealOnScroll>
+        <ShopByCategory />
+     
+        <BrandFeatures />
+      </RevealOnScroll>
+
+      <RevealOnScroll>
+        <FeaturedProducts />
+      </RevealOnScroll>
+
+      <RevealOnScroll>
+        <Posters />
+      </RevealOnScroll>
+
+      <RevealOnScroll>
+        <AboutAralia />
+      
+        <ExploreCollection />
+     
+        <BrandPromise />
+      </RevealOnScroll>
+
+      <RevealOnScroll>
+        <WhyAralia />
+      </RevealOnScroll>
+
+      <RevealOnScroll>
+        <SizeGuide />
+      </RevealOnScroll>
+
+      <RevealOnScroll>
+        <NatureBanner />
+      </RevealOnScroll>
     </main>
   );
 }

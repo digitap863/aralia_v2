@@ -26,7 +26,14 @@ export default function Hero() {
           sizes="100vw"
           className="object-cover object-[75%_center] sm:object-center pointer-events-none"
         />
-
+{/* Soft white glow behind the text */}
+<div
+  className="absolute inset-0 pointer-events-none"
+  style={{
+    background:
+      "radial-gradient(ellipse 45% 75% at 22% 42%, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.5) 35%, rgba(255,255,255,0.15) 65%, rgba(255,255,255,0) 100%)",
+  }}
+/>
         {/* Soft gradient overlay on mobile for crystal-clear readability (fades away on md+) */}
         <div className="absolute inset-0 bg-linear-to-r from-[#f4beaa]/90 via-[#f4beaa]/45 to-transparent md:hidden pointer-events-none" />
 
@@ -69,7 +76,7 @@ export default function Hero() {
                 href="/collections"
                 className="inline-flex items-center justify-center px-3.5 sm:px-5 md:px-6 py-2 sm:py-2.5 bg-transparent hover:bg-neutral-900/5 active:bg-neutral-900/10 text-neutral-800 text-[10px] sm:text-xs md:text-[13px] font-medium tracking-wide rounded-xs border border-neutral-400/80 transition-colors"
               >
-                Shop Collection
+                Explore Collection
               </Link>
             </div>
 

@@ -12,6 +12,35 @@ interface CollectionItem {
   description?: string;
 }
 
+export interface AnnouncementItem {
+  id: string;
+  text: string;
+  mobileText?: string;
+  highlight?: string;
+  code?: string;
+  link?: string;
+}
+
+const defaultAnnouncements: AnnouncementItem[] = [
+  {
+    id: "ann-1",
+    text: "Free Shipping Over ₹2000 — Use code",
+    code: "SUMMER20",
+  },
+  {
+    id: "ann-2",
+    text: "Buy Any 2 Bras & Get 1 FREE",
+    highlight: "Limited Time Festive Offer",
+    link: "/offers/festive-combo",
+  },
+  {
+    id: "ann-3",
+    text: "Feather-Touch Korean Comfort Innerwear Collection",
+    highlight: "Explore New Arrivals →",
+    link: "/collections/new-arrivals",
+  },
+];
+
 const collections: CollectionItem[] = [
   { name: "All Collections", href: "/collections" },
   { name: "Bras", href: "/collections/bras" },
@@ -22,11 +51,34 @@ const collections: CollectionItem[] = [
   { name: "New Arrivals", href: "/collections/new-arrivals" },
 ];
 
-export default function Navbar() {
+interface NavbarProps {
+  announcements?: AnnouncementItem[];
+}
+
+export default function Navbar({
+  announcements = defaultAnnouncements,
+}: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
   const [isMobileCollectionsOpen, setIsMobileCollectionsOpen] = useState(false);
+  const [announcementIndex, setAnnouncementIndex] = useState(0);
+  const [isAnnouncementFading, setIsAnnouncementFading] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Rotate announcement bar every 2 seconds
+  useEffect(() => {
+    if (announcements.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setIsAnnouncementFading(true);
+      setTimeout(() => {
+        setAnnouncementIndex((prev) => (prev + 1) % announcements.length);
+        setIsAnnouncementFading(false);
+      }, 200);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [announcements.length]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -57,13 +109,55 @@ export default function Navbar() {
     };
   }, [isMobileMenuOpen]);
 
+  const currentAnnouncement =
+    announcements[announcementIndex] || announcements[0];
+
   return (
     <header className="w-full sticky top-0 z-50 bg-white border-b border-neutral-100 shadow-[0_1px_3px_rgba(0,0,0,0.03)] font-sans">
-      {/* Top Announcement Bar */}
-      <div className="bg-[#212224] text-neutral-200 text-xs sm:text-[13px] tracking-wide py-2 px-4 text-center font-normal">
-        <p className="inline-block transition-opacity duration-300">
-          Free Shipping Over ₹2000 - Use code <span className="font-semibold text-white">SUMMER20</span>
-        </p>
+      {/* Top Announcement Bar - Dynamic Rotator with Fluid Auto-Scaling Font */}
+      <div className="bg-[#212224] text-neutral-200 text-[clamp(10px,2.5vw,13px)] tracking-tight sm:tracking-normal md:tracking-wide py-1.5 sm:py-2 px-2 sm:px-4 text-center font-normal h-8 sm:h-9 overflow-hidden flex items-center justify-center">
+        <div
+          className={`w-full max-w-full px-1 flex items-center justify-center transition-all duration-200 ease-out transform ${
+            isAnnouncementFading
+              ? "opacity-0 -translate-y-1.5"
+              : "opacity-100 translate-y-0"
+          }`}
+        >
+          {currentAnnouncement?.link ? (
+            <Link
+              href={currentAnnouncement.link}
+              className="hover:text-white transition-colors inline-flex items-center gap-1 sm:gap-1.5 justify-center whitespace-nowrap max-w-full"
+            >
+              <span className="hidden sm:inline truncate">{currentAnnouncement.text}</span>
+              <span className="inline sm:hidden truncate">{currentAnnouncement.mobileText || currentAnnouncement.text}</span>
+              {currentAnnouncement.code && (
+                <span className="font-semibold text-white tracking-wider bg-white/15 px-1.5 py-0.5 rounded-xs text-[10px] sm:text-[11px] shrink-0">
+                  {currentAnnouncement.code}
+                </span>
+              )}
+              {currentAnnouncement.highlight && !currentAnnouncement.code && (
+                <span className="font-semibold text-white underline underline-offset-2 shrink-0">
+                  {currentAnnouncement.highlight}
+                </span>
+              )}
+            </Link>
+          ) : (
+            <p className="inline-flex items-center gap-1 sm:gap-1.5 justify-center whitespace-nowrap max-w-full">
+              <span className="hidden sm:inline truncate">{currentAnnouncement?.text}</span>
+              <span className="inline sm:hidden truncate">{currentAnnouncement?.mobileText || currentAnnouncement?.text}</span>
+              {currentAnnouncement?.code && (
+                <span className="font-semibold text-white tracking-wider bg-white/15 px-1.5 py-0.5 rounded-xs text-[10px] sm:text-[11px] shrink-0">
+                  {currentAnnouncement.code}
+                </span>
+              )}
+              {currentAnnouncement?.highlight && !currentAnnouncement?.code && (
+                <span className="font-semibold text-white shrink-0">
+                  {currentAnnouncement.highlight}
+                </span>
+              )}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Main Navbar */}
