@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -46,11 +46,28 @@ const defaultCollections: CollectionStage[] = [
   },
 ];
 
+export function CollectionCardSkeleton() {
+  return (
+    <div className="relative w-full aspect-1140/1380 rounded-[20px] overflow-hidden border border-[#ecc9c1]/60 bg-[#faeee8] shadow-[0_6px_14px_rgba(110,50,50,0.1)] select-none">
+      <div className="absolute inset-0 bg-gradient-to-r from-[#faeee8] via-[#f7ded5] to-[#faeee8] animate-pulse" />
+      {/* Skeleton Top Details */}
+      <div className="absolute top-8 inset-x-6 flex flex-col items-center">
+        <div className="w-8 h-8 rounded-full bg-white/40 mb-3 animate-pulse" />
+        <div className="w-24 h-5 bg-white/50 rounded-xs mb-2 animate-pulse" />
+        <div className="w-36 h-3 bg-white/40 rounded-xs animate-pulse" />
+      </div>
+      {/* Bottom Skeleton Button */}
+      <div className="absolute bottom-6 inset-x-6 h-9 bg-white/50 rounded-xs animate-pulse" />
+    </div>
+  );
+}
+
 interface ExploreCollectionProps {
   collections?: CollectionStage[];
   badgeText?: string;
   headline?: string;
   description?: string;
+  initialLoading?: boolean;
 }
 
 /*
@@ -65,8 +82,18 @@ export default function ExploreCollection({
   badgeText = "EXPLORE OUR COLLECTION",
   headline = "For Every Stage, Every Women",
   description = "Discover everyday essentials designed for every stage of life, from first-fit comfort to timeless everyday elegance.",
+  initialLoading = true,
 }: ExploreCollectionProps) {
+  const [isLoading, setIsLoading] = useState(initialLoading);
+  const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
   const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 600);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <section
@@ -103,75 +130,116 @@ export default function ExploreCollection({
           </p>
         </div>
 
-        {/* Desktop View: 3-Column Grid */}
-        <div className="hidden md:grid md:grid-cols-3 gap-4 items-stretch">
-          {collections.map((item) => (
-            <Link
-              key={item.id}
-              href={item.href}
-              aria-label={`${item.category} Collection`}
-              className="group block relative w-full aspect-1140/1380 rounded-[20px] overflow-hidden shadow-[0_6px_14px_rgba(110,50,50,0.22)] hover:shadow-[0_14px_30px_rgba(110,50,50,0.28)] transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#AC7058]/50"
-            >
-              <Image
-                src={item.image}
-                alt={`${item.category} Collection - Aralia`}
-                fill
-                sizes="(max-width: 1024px) 33vw, 320px"
-                className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.02] pointer-events-none select-none"
-              />
-            </Link>
-          ))}
-        </div>
-
-        {/* Mobile View: Touch Swiper Carousel */}
-        <div className="block md:hidden w-full">
-          <Swiper
-            spaceBetween={16}
-            slidesPerView={1.15}
-            speed={400}
-            grabCursor={true}
-            centeredSlides={false}
-            breakpoints={{
-              0: { slidesPerView: 1.15, spaceBetween: 14 },
-              480: { slidesPerView: 1.3, spaceBetween: 16 },
-              640: { slidesPerView: 2.1, spaceBetween: 18 },
-            }}
-            onSlideChange={(swiper) => setMobileActiveIndex(swiper.activeIndex)}
-            className="w-full overflow-visible!"
-          >
-            {collections.map((item) => (
-              <SwiperSlide key={item.id} className="h-auto! select-none">
-                <Link
-                  href={item.href}
-                  aria-label={`${item.category} Collection`}
-                  className="group block relative w-full aspect-1140/1380 rounded-[20px] overflow-hidden shadow-[0_6px_14px_rgba(110,50,50,0.22)] active:scale-[0.99] transition-all duration-300"
-                >
-                  <Image
-                    src={item.image}
-                    alt={`${item.category} Collection - Aralia`}
-                    fill
-                    sizes="90vw"
-                    className="object-cover object-center pointer-events-none select-none"
-                  />
-                </Link>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-
-          {/* Pagination Dots */}
-          <div className="flex items-center justify-center gap-1.5 mt-6">
-            {collections.map((_, idx) => (
-              <div
-                key={idx}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  idx === mobileActiveIndex
-                    ? "w-5 bg-[#AC7058]"
-                    : "w-1.5 bg-white/70"
-                }`}
-              />
+        {/* Desktop View: 3-Column Grid or Skeleton */}
+        {isLoading ? (
+          <div className="hidden md:grid md:grid-cols-3 gap-4 items-stretch">
+            {[1, 2, 3].map((key) => (
+              <CollectionCardSkeleton key={key} />
             ))}
           </div>
-        </div>
+        ) : (
+          <div className="hidden md:grid md:grid-cols-3 gap-4 items-stretch">
+            {collections.map((item) => (
+              <Link
+                key={item.id}
+                href={item.href}
+                aria-label={`${item.category} Collection`}
+                className="group block relative w-full aspect-1140/1380 rounded-[20px] overflow-hidden shadow-[0_6px_14px_rgba(110,50,50,0.22)] hover:shadow-[0_14px_30px_rgba(110,50,50,0.28)] transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#AC7058]/50"
+              >
+                {/* Shimmer Placeholder until image loads */}
+                {!loadedImages[item.id] && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#faeee8] via-[#f7ded5] to-[#faeee8] animate-pulse z-0" />
+                )}
+
+                <Image
+                  src={item.image}
+                  alt={`${item.category} Collection - Aralia`}
+                  fill
+                  onLoad={() =>
+                    setLoadedImages((prev) => ({ ...prev, [item.id]: true }))
+                  }
+                  sizes="(max-width: 1024px) 33vw, 320px"
+                  className={`object-cover object-center transition-all duration-500 group-hover:scale-[1.02] pointer-events-none select-none z-1 ${
+                    loadedImages[item.id] ? "opacity-100" : "opacity-0"
+                  }`}
+                />
+              </Link>
+            ))}
+          </div>
+        )}
+
+        {/* Mobile View: Touch Swiper Carousel or Skeleton */}
+        {isLoading ? (
+          <div className="flex md:hidden gap-3.5 overflow-hidden">
+            <div className="w-[85%] shrink-0">
+              <CollectionCardSkeleton />
+            </div>
+            <div className="w-[85%] shrink-0">
+              <CollectionCardSkeleton />
+            </div>
+          </div>
+        ) : (
+          <div className="block md:hidden w-full">
+            <Swiper
+              spaceBetween={16}
+              slidesPerView={1.15}
+              speed={400}
+              grabCursor={true}
+              centeredSlides={false}
+              breakpoints={{
+                0: { slidesPerView: 1.15, spaceBetween: 14 },
+                480: { slidesPerView: 1.3, spaceBetween: 16 },
+                640: { slidesPerView: 2.1, spaceBetween: 18 },
+              }}
+              onSlideChange={(swiper) => setMobileActiveIndex(swiper.activeIndex)}
+              className="w-full overflow-visible!"
+            >
+              {collections.map((item) => (
+                <SwiperSlide key={item.id} className="h-auto! select-none">
+                  <Link
+                    href={item.href}
+                    aria-label={`${item.category} Collection`}
+                    className="group block relative w-full aspect-1140/1380 rounded-[20px] overflow-hidden shadow-[0_6px_14px_rgba(110,50,50,0.22)] active:scale-[0.99] transition-all duration-300"
+                  >
+                    {!loadedImages[item.id] && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#faeee8] via-[#f7ded5] to-[#faeee8] animate-pulse z-0" />
+                    )}
+
+                    <Image
+                      src={item.image}
+                      alt={`${item.category} Collection - Aralia`}
+                      fill
+                      onLoad={() =>
+                        setLoadedImages((prev) => ({
+                          ...prev,
+                          [item.id]: true,
+                        }))
+                      }
+                      sizes="90vw"
+                      className={`object-cover object-center pointer-events-none select-none z-1 transition-opacity duration-300 ${
+                        loadedImages[item.id] ? "opacity-100" : "opacity-0"
+                      }`}
+                    />
+                  </Link>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            {/* Pagination Dots */}
+            <div className="flex items-center justify-center gap-1.5 mt-6">
+              {collections.map((_, idx) => (
+                <div
+                  key={idx}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    idx === mobileActiveIndex
+                      ? "w-5 bg-[#AC7058]"
+                      : "w-1.5 bg-white/70"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

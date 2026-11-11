@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
@@ -169,8 +169,51 @@ const products: ProductItem[] = [
   },
 ];
 
-export default function FeaturedProducts() {
+export function ProductCardSkeleton() {
+  return (
+    <div className="flex flex-col h-full rounded-2xl overflow-hidden bg-white border border-[#ede5dd] shadow-xs select-none">
+      {/* Square Image Skeleton with Shimmer */}
+      <div className="relative w-full aspect-square bg-[#f5ede7] overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#f5ede7] via-[#faeae4] to-[#f5ede7] animate-pulse" />
+      </div>
+
+      {/* Details Skeleton */}
+      <div className="p-3.5 sm:p-4 flex flex-col justify-between flex-1">
+        <div>
+          {/* Title Line */}
+          <div className="h-3.5 sm:h-4 bg-[#ede2da] rounded-xs w-3/4 mb-2 animate-pulse" />
+          {/* Subtitle Line */}
+          <div className="h-2.5 sm:h-3 bg-[#f5ebe4] rounded-xs w-1/2 mb-3.5 animate-pulse" />
+          {/* Price Line */}
+          <div className="h-3.5 bg-[#ede2da] rounded-xs w-1/3 mb-2 animate-pulse" />
+          {/* Sizes Line */}
+          <div className="h-2.5 bg-[#f5ebe4] rounded-xs w-2/5 mb-3 animate-pulse" />
+
+          {/* Color Dots */}
+          <div className="flex items-center gap-1.5 mb-4">
+            <div className="w-3.5 h-3.5 rounded-full bg-[#ede2da] animate-pulse" />
+            <div className="w-3.5 h-3.5 rounded-full bg-[#ede2da] animate-pulse" />
+            <div className="w-3.5 h-3.5 rounded-full bg-[#ede2da] animate-pulse" />
+          </div>
+        </div>
+
+        {/* Button */}
+        <div className="w-full h-8 sm:h-9 bg-[#ede2da] rounded-sm animate-pulse" />
+      </div>
+    </div>
+  );
+}
+
+interface FeaturedProductsProps {
+  initialLoading?: boolean;
+}
+
+export default function FeaturedProducts({
+  initialLoading = true,
+}: FeaturedProductsProps) {
   const swiperRef = useRef<SwiperType | null>(null);
+  const [isLoading, setIsLoading] = useState(initialLoading);
+  const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
   const [activeSnapIndex, setActiveSnapIndex] = useState(0);
   const [totalSnaps, setTotalSnaps] = useState(5);
   const [wishlist, setWishlist] = useState<Record<string, boolean>>({
@@ -180,6 +223,14 @@ export default function FeaturedProducts() {
   const [addedCart, setAddedCart] = useState<Record<string, boolean>>({
     "prod": true, // matching reference image second card filled button
   });
+
+  useEffect(() => {
+    // Elegant transition simulating initial load
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 600);
+    return () => clearTimeout(timer);
+  }, []);
 
   const updateSnapInfo = (swiper: SwiperType) => {
     setActiveSnapIndex(swiper.snapIndex ?? 0);
@@ -262,67 +313,85 @@ export default function FeaturedProducts() {
           </button>
         </div>
 
-        {/* Swiper Product Carousel */}
+        {/* Swiper Product Carousel or Skeleton Loader */}
         <div className="relative w-full">
-          <Swiper
-            spaceBetween={14}
-            slidesPerView={2}
-            speed={400}
-            grabCursor={true}
-            breakpoints={{
-              0: {
-                slidesPerView: 2,
-                spaceBetween: 11,
-              },
-              640: {
-                slidesPerView: 2.5,
-                spaceBetween: 12,
-              },
-              768: {
-                slidesPerView: 3,
-                spaceBetween: 14,
-              },
-              1024: {
-                slidesPerView: 4,
-                spaceBetween: 14,
-              },
-              1280: {
-                slidesPerView: 5,
-                spaceBetween: 14,
-              },
-            }}
-            onSwiper={(swiper) => {
-              swiperRef.current = swiper;
-              updateSnapInfo(swiper);
-            }}
-            onSlideChange={(swiper) => updateSnapInfo(swiper)}
-            onBreakpoint={(swiper) => updateSnapInfo(swiper)}
-            onResize={(swiper) => updateSnapInfo(swiper)}
-            className="w-full overflow-hidden!"
-          >
-            {products.map((product) => {
-              const isWishlisted = !!wishlist[product.id];
-              const isAdded = !!addedCart[product.id];
-              const activeColorIndex = selectedColors[product.id] ?? 0;
+          {isLoading ? (
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-3.5">
+              {[1, 2, 3, 4, 5].map((key) => (
+                <ProductCardSkeleton key={key} />
+              ))}
+            </div>
+          ) : (
+            <Swiper
+              spaceBetween={14}
+              slidesPerView={2}
+              speed={400}
+              grabCursor={true}
+              breakpoints={{
+                0: {
+                  slidesPerView: 2,
+                  spaceBetween: 11,
+                },
+                640: {
+                  slidesPerView: 2.5,
+                  spaceBetween: 12,
+                },
+                768: {
+                  slidesPerView: 3,
+                  spaceBetween: 14,
+                },
+                1024: {
+                  slidesPerView: 4,
+                  spaceBetween: 14,
+                },
+                1280: {
+                  slidesPerView: 5,
+                  spaceBetween: 14,
+                },
+              }}
+              onSwiper={(swiper) => {
+                swiperRef.current = swiper;
+                updateSnapInfo(swiper);
+              }}
+              onSlideChange={(swiper) => updateSnapInfo(swiper)}
+              onBreakpoint={(swiper) => updateSnapInfo(swiper)}
+              onResize={(swiper) => updateSnapInfo(swiper)}
+              className="w-full overflow-hidden!"
+            >
+              {products.map((product) => {
+                const isWishlisted = !!wishlist[product.id];
+                const isAdded = !!addedCart[product.id];
+                const activeColorIndex = selectedColors[product.id] ?? 0;
 
-              return (
-                <SwiperSlide key={product.id} className="h-auto! select-none">
-                  <div className="group flex flex-col h-full rounded-2xl overflow-hidden bg-white border border-[#ede5dd] shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                    
-                    {/* Top Image Container with Badge and Wishlist Heart */}
-                    <div className="relative w-full aspect-square bg-[#fbf6f3] overflow-hidden">
-                      <Link href={product.href} className="block relative w-full h-full overflow-hidden">
-                        {/* Primary Product Image */}
-                        <Image
-                          src={product.image}
-                          alt={product.name}
-                          fill
-                          draggable={false}
-                          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 260px"
-                          className={`object-cover object-center pointer-events-none select-none transition-all duration-700 ease-out group-hover:scale-105 ${
-                            product.hoverImage ? "group-hover:opacity-0" : ""
-                          }`}
-                        />
+                return (
+                  <SwiperSlide key={product.id} className="h-auto! select-none">
+                    <div className="group flex flex-col h-full rounded-2xl overflow-hidden bg-white border border-[#ede5dd] shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                      
+                      {/* Top Image Container with Badge and Wishlist Heart */}
+                      <div className="relative w-full aspect-square bg-[#fbf6f3] overflow-hidden">
+                        {/* Shimmer Skeleton until image loads */}
+                        {!loadedImages[product.id] && (
+                          <div className="absolute inset-0 bg-gradient-to-r from-[#f5ede7] via-[#faeae4] to-[#f5ede7] animate-pulse z-0" />
+                        )}
+
+                        <Link href={product.href} className="block relative w-full h-full overflow-hidden z-1">
+                          {/* Primary Product Image */}
+                          <Image
+                            src={product.image}
+                            alt={product.name}
+                            fill
+                            draggable={false}
+                            onLoad={() =>
+                              setLoadedImages((prev) => ({
+                                ...prev,
+                                [product.id]: true,
+                              }))
+                            }
+                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 260px"
+                            className={`object-cover object-center pointer-events-none select-none transition-all duration-700 ease-out group-hover:scale-105 ${
+                              product.hoverImage ? "group-hover:opacity-0" : ""
+                            } ${loadedImages[product.id] ? "opacity-100" : "opacity-0"}`}
+                          />
 
                         {/* Model / Alternate Image: Silky Dissolve & Micro-Zoom on Hover */}
                         {product.hoverImage && (
@@ -429,7 +498,8 @@ export default function FeaturedProducts() {
               );
             })}
           </Swiper>
-        </div>
+        )}
+      </div>
 
       </div>
     </section>
