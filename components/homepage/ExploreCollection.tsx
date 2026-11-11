@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
+import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 
 export interface CollectionStage {
@@ -84,9 +85,11 @@ export default function ExploreCollection({
   description = "Discover everyday essentials designed for every stage of life, from first-fit comfort to timeless everyday elegance.",
   initialLoading = true,
 }: ExploreCollectionProps) {
+  const swiperRef = useRef<SwiperType | null>(null);
   const [isLoading, setIsLoading] = useState(initialLoading);
   const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
   const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -95,20 +98,37 @@ export default function ExploreCollection({
     return () => clearTimeout(timer);
   }, []);
 
+  // Auto-scrolling carousel effect on a 3-second timeout
+  useEffect(() => {
+    if (isLoading || isPaused) return;
+
+    const interval = setInterval(() => {
+      if (swiperRef.current) {
+        if (swiperRef.current.isEnd) {
+          swiperRef.current.slideTo(0);
+        } else {
+          swiperRef.current.slideNext();
+        }
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isLoading, isPaused, collections.length]);
+
   return (
     <section
       className="relative w-full  overflow-x-clip select-none py-10 sm:py-12 md:py-14 border-0"
       style={{ background: SECTION_BG }}
     >
-      {/* White shade blending the About section into this one */}
-<div
-  aria-hidden="true"
-  className="absolute inset-x-0 -top-28 sm:h-40  pointer-events-none z-20"
-  style={{
-    background:
-      "linear-gradient(to bottom, rgba(247,247,245,0) 0%, rgba(247,247,245,0.55) 30%, #f7f7f5 52%, rgba(247,247,245,0.7) 72%, rgba(247,247,245,0) 100%)",
-  }}
-/>
+      {/* Soft top blend inside ExploreCollection */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-16 sm:h-20 pointer-events-none z-10"
+        style={{
+          background:
+            "linear-gradient(to bottom, #f7f7f5 0%, rgba(247,247,245,0) 100%)",
+        }}
+      />
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 md:px-10 ">
         {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-10 sm:mb-12 md:mb-14">
@@ -179,11 +199,20 @@ export default function ExploreCollection({
             </div>
           </div>
         ) : (
-          <div className="block md:hidden w-full">
+          <div
+            className="block md:hidden w-full"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            onTouchStart={() => setIsPaused(true)}
+            onTouchEnd={() => setIsPaused(false)}
+          >
             <Swiper
+              onSwiper={(swiper) => {
+                swiperRef.current = swiper;
+              }}
               spaceBetween={16}
               slidesPerView={1.15}
-              speed={400}
+              speed={600}
               grabCursor={true}
               centeredSlides={false}
               breakpoints={{
@@ -225,15 +254,18 @@ export default function ExploreCollection({
               ))}
             </Swiper>
 
-            {/* Pagination Dots */}
+            {/* Pagination Indicator Dots */}
             <div className="flex items-center justify-center gap-1.5 mt-6">
               {collections.map((_, idx) => (
-                <div
+                <button
                   key={idx}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                  type="button"
+                  onClick={() => swiperRef.current?.slideTo(idx)}
+                  aria-label={`Go to slide ${idx + 1}`}
+                  className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
                     idx === mobileActiveIndex
-                      ? "w-5 bg-[#AC7058]"
-                      : "w-1.5 bg-white/70"
+                      ? "w-6 bg-[#AC7058]"
+                      : "w-1.5 bg-white/70 hover:bg-white"
                   }`}
                 />
               ))}

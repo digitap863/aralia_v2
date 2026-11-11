@@ -63,7 +63,53 @@ export default function Navbar({
   const [isMobileCollectionsOpen, setIsMobileCollectionsOpen] = useState(false);
   const [announcementIndex, setAnnouncementIndex] = useState(0);
   const [isAnnouncementFading, setIsAnnouncementFading] = useState(false);
+  const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
+
+  // Smart sticky navbar: hide on scroll down, show on scroll up (desktop view only)
+  useEffect(() => {
+    const handleScroll = () => {
+      // Do not hide navbar on mobile/tablet view (screens below lg: 1024px)
+      if (window.innerWidth < 1024) {
+        setIsNavbarVisible(true);
+        return;
+      }
+
+      const currentScrollY = window.scrollY;
+
+      // Always show at the top of the page
+      if (currentScrollY <= 50) {
+        setIsNavbarVisible(true);
+        lastScrollY.current = currentScrollY;
+        return;
+      }
+
+      // Keep visible if mobile drawer is open
+      if (isMobileMenuOpen) {
+        setIsNavbarVisible(true);
+        return;
+      }
+
+      const delta = currentScrollY - lastScrollY.current;
+      // Filter out micro-scroll jitter
+      if (Math.abs(delta) < 6) return;
+
+      if (delta > 0 && currentScrollY > 100) {
+        // Scrolling down -> hide navbar (desktop only)
+        setIsNavbarVisible(false);
+        setIsCollectionsOpen(false);
+      } else if (delta < 0) {
+        // Scrolling up -> show navbar
+        setIsNavbarVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isMobileMenuOpen]);
 
   // Rotate announcement bar every 2 seconds
   useEffect(() => {
@@ -113,7 +159,13 @@ export default function Navbar({
     announcements[announcementIndex] || announcements[0];
 
   return (
-    <header className="w-full sticky top-0 z-50 bg-white border-b border-neutral-100 shadow-[0_1px_3px_rgba(0,0,0,0.03)] font-sans">
+    <header
+      className={`w-full sticky top-0 z-50 bg-white border-b border-neutral-100 font-sans transition-transform duration-300 ease-in-out ${
+        isNavbarVisible
+          ? "translate-y-0 shadow-[0_1px_3px_rgba(0,0,0,0.03)]"
+          : "translate-y-0 lg:-translate-y-full shadow-[0_1px_3px_rgba(0,0,0,0.03)] lg:shadow-none"
+      }`}
+    >
       {/* Top Announcement Bar - Dynamic Rotator with Fluid Auto-Scaling Font */}
       <div className="bg-[#212224] text-neutral-200 text-[clamp(10px,2.5vw,13px)] tracking-tight sm:tracking-normal md:tracking-wide py-1.5 sm:py-2 px-2 sm:px-4 text-center font-normal h-8 sm:h-9 overflow-hidden flex items-center justify-center">
         <div
@@ -162,7 +214,7 @@ export default function Navbar({
 
       {/* Main Navbar */}
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-18 md:h-20">
+        <div className="flex items-center justify-between h-16 sm:h-18 md:h-23">
           
           {/* Mobile Menu Button - visible on screens below lg */}
           <div className="flex items-center lg:hidden flex-1">

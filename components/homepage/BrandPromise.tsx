@@ -23,7 +23,7 @@ export default function BrandPromise() {
       </div>
 
       {/* Bottom-Left Flower (High-Resolution Soft Petals) */}
-      <div className="absolute -bottom-4 -left-4 sm:-bottom-3 sm:-left-3 w-28 sm:w-36 md:w-44 lg:w-52 pointer-events-none select-none z-0">
+      <div className="absolute -bottom-12 -left-8 sm:-bottom-3 sm:-left-3 w-28 sm:w-36 md:w-44 lg:w-52 pointer-events-none select-none z-0">
         <Image
           src="/images/HomePage/OurBrand/flower-soft.webp"
           alt="Aralia Blossom"
@@ -34,7 +34,7 @@ export default function BrandPromise() {
       </div>
 
       {/* Top-Right Flower (High-Resolution Crisp Cherry Blossom) */}
-      <div className="absolute -top-3 -right-3 sm:-top-25 sm:-right-25 w-32 sm:w-44 md:w-52 lg:w-60 pointer-events-none select-none z-0">
+      <div className="absolute -top-10 -right-10 sm:-top-25 sm:-right-25 w-32 sm:w-44 md:w-52 lg:w-60 pointer-events-none select-none z-0">
         <Image
           src="/images/HomePage/OurBrand/flower-crisp.webp"
           alt="Cherry Blossom"

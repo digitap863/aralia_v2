@@ -6,26 +6,26 @@ import Link from "next/link";
 
 export default function AboutAralia() {
   return (
-    <section className="relative w-8xl overflow-hidden bg-white select-none py-10 sm:py-12 lg:py-0 lg:h-130 xl:h-137.5 lg:max-h-150 flex items-center">
+    <section className="relative w-full overflow-hidden bg-white select-none py-10 sm:py-12 lg:py-0 lg:h-130 xl:h-137.5 lg:max-h-150 flex items-center">
       {/* TOP blend: fades from the previous section's colour into this one.
           Inside the section (top-0) so overflow-hidden doesn't clip it.
           z-[1] keeps it above the bg image but below the content. */}
-     <div
-  aria-hidden="true"
-  className="absolute inset-x-0 top-0 h-20 sm:h-24 md:h-32 pointer-events-none z-20"
-  style={{
-    background:
-      "linear-gradient(to bottom, #ffffff 0%, rgba(255,255,255,0.85) 25%, rgba(255,255,255,0.45) 55%, rgba(255,255,255,0) 100%)",
-  }}
-/>
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-20 sm:h-24 md:h-32 pointer-events-none z-20"
+        style={{
+          background:
+            "linear-gradient(to bottom, #ffffff 0%, rgba(255,255,255,0.85) 25%, rgba(255,255,255,0.45) 55%, rgba(255,255,255,0) 100%)",
+        }}
+      />
 
       {/* BOTTOM blend */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-32 sm:h-44 md:h-56 pointer-events-none z-1"
+        className="absolute inset-x-0 bottom-0 h-16 sm:h-20 md:h-24 pointer-events-none z-1"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(247,247,245,0) 0%, rgba(247,247,245,0.6) 45%, #f7f7f5 100%)",
+            "linear-gradient(to bottom, rgba(247,247,245,0) 0%, rgba(247,247,245,0.5) 50%, #f7f7f5 100%)",
         }}
       />
 
@@ -96,10 +96,10 @@ export default function AboutAralia() {
               </p>
             </div>
 
-            <div className="mt-5 sm:mt-6">
+            <div className="relative z-30 mt-5 sm:mt-6">
               <Link
                 href="/shop"
-                className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 border border-[#AC7058] text-[#AC7058] hover:bg-[#AC7058]/5 active:bg-[#AC7058]/10 text-xs font-semibold tracking-wide rounded-xs transition-colors shadow-2xs"
+                className="inline-flex items-center justify-center px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 bg-[#1f242d] hover:bg-black active:bg-neutral-900 text-white text-[10px] sm:text-xs md:text-[13px] font-medium tracking-wide rounded-xs transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0"
               >
                 Shop Collection
               </Link>
