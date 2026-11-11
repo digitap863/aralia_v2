@@ -26,7 +26,7 @@ export default function Home() {
       <RevealOnScroll>
         <FeaturedProducts />
       </RevealOnScroll>
-
+ 
       <RevealOnScroll>
         <Posters />
       </RevealOnScroll>

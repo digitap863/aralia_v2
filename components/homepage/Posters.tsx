@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -53,6 +53,7 @@ export default function Posters() {
   const swiperRef = useRef<SwiperType | null>(null);
   const [activeSnapIndex, setActiveSnapIndex] = useState(0);
   const [totalSnaps, setTotalSnaps] = useState(4);
+  const [isPaused, setIsPaused] = useState(false);
 
   const updateSnapInfo = (swiper: SwiperType) => {
     setActiveSnapIndex(swiper.snapIndex ?? 0);
@@ -76,6 +77,23 @@ export default function Posters() {
       swiperRef.current.slideNext();
     }
   };
+
+  // Auto-scrolling carousel effect on a 4-second timeout
+  useEffect(() => {
+    if (isPaused) return;
+
+    const interval = setInterval(() => {
+      if (swiperRef.current) {
+        if (swiperRef.current.isEnd) {
+          swiperRef.current.slideTo(0);
+        } else {
+          swiperRef.current.slideNext();
+        }
+      }
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
 
   const counterText = `${String(activeSnapIndex + 1).padStart(2, "0")} / ${String(
     totalSnaps
@@ -111,7 +129,13 @@ export default function Posters() {
         </div>
 
         {/* Swiper Carousel Track */}
-        <div className="relative w-full">
+        <div
+          className="relative w-full"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
+        >
           <Swiper
             spaceBetween={16}
             slidesPerView={1}
