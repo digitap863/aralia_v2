@@ -14,15 +14,26 @@ export default function CollectionsHero() {
 
   return (
     <section className="relative w-full overflow-hidden select-none bg-white">
-      {/* Background Banner Image Container - 100vh minus Navbar height */}
-      <div className="relative w-full min-h-[calc(100vh-96px)] sm:min-h-[calc(100vh-104px)] md:min-h-[calc(100vh-124px)] flex items-center">
+      {/* Background Banner Image Container - 4:5 on mobile (matches mob_Banner.webp), 3:1 on md+ (matches Banner.webp, no object-cover crop) */}
+      <div className="relative w-full aspect-4/5 md:aspect-3/1 flex items-start pt-8 sm:pt-12 md:items-center md:pt-0">
+        {/* Mobile Portrait Banner (4:5) */}
         <Image
-          src="/images/Collections/Banner.webp"
-          alt="About Aralia - Korean Comfort Luxury Innerwear"
+          src="/images/Collections/mob_Banner.webp"
+          alt="Aralia Collections - Korean Comfort Luxury Innerwear"
           fill
           priority
           sizes="100vw"
-          className=" object-[78%_center] sm:object-[70%_center] md:object-center pointer-events-none select-none"
+          className="block md:hidden object-cover object-center pointer-events-none select-none"
+        />
+
+        {/* Desktop Landscape Banner (3:1, uncropped without object-cover) */}
+        <Image
+          src="/images/Collections/Banner.webp"
+          alt="Aralia Collections - Korean Comfort Luxury Innerwear"
+          fill
+          priority
+          sizes="100vw"
+          className="hidden md:block object-contain object-center pointer-events-none select-none"
         />
 
         {/* Soft subtle atmospheric vignette on mobile for optimal text contrast */}
@@ -43,7 +54,7 @@ export default function CollectionsHero() {
 
         {/* Text Content Overlay */}
         <div className="relative z-20 w-full px-5 sm:px-8 md:px-12 lg:px-30">
-          <div className="max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl flex flex-col items-start -translate-y-4 sm:-translate-y-6 md:-translate-y-8 lg:-translate-y-11">
+          <div className="max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl flex flex-col items-start md:-translate-y-8 lg:-translate-y-11">
             
             {/* Pill Badge */}
             <div

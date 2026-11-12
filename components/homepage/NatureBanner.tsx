@@ -4,11 +4,9 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Leaf, Cloud, Waves } from "lucide-react";
-import { Playball } from "next/font/google";
 
-const script = Playball({ subsets: ["latin"], weight: "400" });
 
-const GREEN = "#0a5a12";
+
 const ROSE = "#c98383";
 
 const features = [
@@ -17,37 +15,6 @@ const features = [
   { label: ["Seamless", "Fit"], Icon: Waves },
 ];
 
-/* Curved (swoosh) arrow instead of a straight line */
-function CurvedArrow({
-  className = "",
-  style,
-}: {
-  className?: string;
-  style?: React.CSSProperties;
-}) {
-  return (
-    <svg
-      className={className}
-      style={style}
-      viewBox="0 0 160 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path
-        d="M2 5 C 40 24, 105 24, 152 9"
-        vectorEffect="non-scaling-stroke"
-      />
-      <path
-        d="M142 4 L153 9 L143 17"
-        vectorEffect="non-scaling-stroke"
-      />
-    </svg>
-  );
-}
 
 export default function NatureBanner() {
   return (
@@ -56,9 +23,9 @@ export default function NatureBanner() {
           MOBILE + TABLET (below lg): image on top, content below
       ===================================================== */}
       <div className="lg:hidden">
-        <div className="relative w-full aspect-[3/2] sm:aspect-[2/1]">
+        <div className="relative w-full aspect-3/2 ">
           <Image
-            src="/images/HomePage/nature-banner.webp"
+            src="/images/HomePage/bottom_banner.webp"
             alt="Aralia - Nature, Woven Into You."
             fill
             sizes="100vw"
@@ -67,22 +34,7 @@ export default function NatureBanner() {
         </div>
 
         <div className="px-6 sm:px-10 py-8 sm:py-10 text-center bg-linear-to-b from-[#fdeee9] to-[#fbf6f3]">
-          <h2
-            className="font-sans font-normal leading-none text-5xl sm:text-6xl"
-            style={{ color: GREEN }}
-          >
-            Nature,
-          </h2>
-          <p
-            className={`${script.className} italic mt-2 text-3xl sm:text-4xl`}
-            style={{ color: GREEN }}
-          >
-            Woven Into You.
-          </p>
-          <CurvedArrow
-            className="mx-auto mt-1 w-28 sm:w-36"
-            style={{ color: GREEN }}
-          />
+          
 
           <Image
             src="/images/logo.webp"
@@ -147,49 +99,20 @@ export default function NatureBanner() {
       ===================================================== */}
       <div className="hidden lg:block relative w-full aspect-2048/708 @container">
         <Image
-          src="/images/HomePage/nature-banner.webp"
+          src="/images/HomePage/bottom_banner.webp"
           alt="Aralia - Nature, Woven Into You. Strong Looks, Stronger Lifts."
           fill
           sizes="100vw"
           className="object-cover object-center pointer-events-none"
         />
 
-        {/* "Nature," */}
-        <h2
-          className="absolute pointer-events-none font-sans font-normal leading-none"
-          style={{
-            left: "22.6%",
-            top: "9%",
-            fontSize: "6.3cqw",
-            color: ROSE,
-          }}
-        >
-          Nature,
-        </h2>
 
-        {/* "Woven Into You." */}
-        <p
-          className={`${script.className} absolute pointer-events-none leading-none italic whitespace-nowrap`}
-          style={{
-            left: "29.4%",
-            top: "29.5%",
-            fontSize: "3.7cqw",
-            color: ROSE,
-          }}
-        >
-          Woven Into You.
-        </p>
-
-        {/* Curved arrow */}
-        <CurvedArrow
-          className="absolute pointer-events-none"
-          style={{ left: "32.8%", top: "42%", width: "14.2%", color: ROSE }}
-        />
+        
 
         {/* Logo (grey) */}
         <div
           className="absolute pointer-events-none -translate-x-1/2"
-          style={{ left: "61.5%", top: "18%", width: "10%" }}
+          style={{ left: "65%", top: "18%", width: "10%" }}
         >
           <Image
             src="/images/logo.webp"
@@ -201,104 +124,100 @@ export default function NatureBanner() {
           />
         </div>
 
-        {/* Heading with vertical rose divider */}
+        {/* Right content stack: Heading, Paragraph, Feature icons */}
         <div
-          className="absolute pointer-events-none font-sans"
+          className="absolute pointer-events-none flex flex-col"
           style={{
-            left: "53.3%",
-            top: "41.5%",
-            paddingLeft: "1.1cqw",
-            borderLeft: `1.5px solid ${ROSE}`,
-            lineHeight: 1.15,
+            left: "60%",
+            top: "38.5%",
+            width: "31%",
+            gap: "1.4cqw",
           }}
         >
-          <span
-            className="block text-[#4a4545]"
-            style={{ fontSize: "clamp(16px, 2.45cqw, 40px)" }}
-          >
-            Strong Looks,
-          </span>
-          <span
-            className="block font-bold"
+          {/* Heading with vertical rose divider */}
+          <div
+            className="font-sans"
             style={{
-              fontSize: "clamp(18px, 2.75cqw, 44px)",
-              color: ROSE,
+              paddingLeft: "1.1cqw",
+              borderLeft: `1.5px solid ${ROSE}`,
+              lineHeight: 1.15,
             }}
           >
-            Stronger Lifts.
-          </span>
-        </div>
-
-        {/* Paragraph */}
-        <p
-          className="absolute pointer-events-none font-sans text-[#5d5656]"
-          style={{
-            left: "53.3%",
-            top: "59.5%",
-            width: "30.5%",
-            fontSize: "clamp(9px, 1.1cqw, 16px)",
-            lineHeight: 1.45,
-          }}
-        >
-          Inspired by nature, designed for your body. Experience effortless
-          comfort, gentle support, and a fit that moves with you.
-        </p>
-
-        {/* Feature icons row */}
-        <div
-          className="absolute pointer-events-none flex items-center font-sans"
-          style={{ left: "53.3%", top: "72%", width: "31%" }}
-        >
-          {features.map(({ label, Icon }, i) => (
-            <div
-              key={label.join(" ")}
-              className="flex flex-1 items-center"
+            <span
+              className="block text-[#4a4545]"
+              style={{ fontSize: "clamp(16px, 2.45cqw, 40px)" }}
+            >
+              Strong Looks,
+            </span>
+            <span
+              className="block font-bold"
               style={{
-                gap: "0.7cqw",
-                paddingLeft: i > 0 ? "1.4cqw" : 0,
-                borderLeft: i > 0 ? `1px solid ${ROSE}55` : "none",
+                fontSize: "clamp(18px, 2.75cqw, 44px)",
+                color: ROSE,
               }}
             >
-              <Icon
-                strokeWidth={1.1}
+              Stronger Lifts.
+            </span>
+          </div>
+
+          {/* Paragraph */}
+          <p
+            className="font-sans text-[#5d5656]"
+            style={{
+              fontSize: "clamp(9px, 1.1cqw, 16px)",
+              lineHeight: 1.45,
+            }}
+          >
+            Inspired by nature, designed for your body. Experience effortless
+            comfort, gentle support, and a fit that moves with you.
+          </p>
+
+          {/* Feature icons row */}
+          <div className="flex items-center font-sans">
+            {features.map(({ label, Icon }, i) => (
+              <div
+                key={label.join(" ")}
+                className="flex flex-1 items-center"
                 style={{
-                  color: ROSE,
-                  width: "clamp(18px, 2.6cqw, 40px)",
-                  height: "clamp(18px, 2.6cqw, 40px)",
-                  flexShrink: 0,
-                }}
-              />
-              <span
-                className="font-medium uppercase text-[#6b5f5f]"
-                style={{
-                  fontSize: "clamp(7px, 0.9cqw, 13px)",
-                  letterSpacing: "0.08em",
-                  lineHeight: 1.25,
+                  gap: "0.7cqw",
+                  paddingLeft: i > 0 ? "1.4cqw" : 0,
+                  borderLeft: i > 0 ? `1px solid ${ROSE}55` : "none",
                 }}
               >
-                {label[0]}
-                <br />
-                {label[1]}
-              </span>
-            </div>
-          ))}
+                <Icon
+                  strokeWidth={1.1}
+                  style={{
+                    color: ROSE,
+                    width: "clamp(18px, 2.6cqw, 40px)",
+                    height: "clamp(18px, 2.6cqw, 40px)",
+                    flexShrink: 0,
+                  }}
+                />
+                <span
+                  className="font-medium uppercase text-[#6b5f5f]"
+                  style={{
+                    fontSize: "clamp(7px, 0.9cqw, 13px)",
+                    letterSpacing: "0.08em",
+                    lineHeight: 1.25,
+                  }}
+                >
+                  {label[0]}
+                  <br />
+                  {label[1]}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* CTA */}
         <Link
           href="/collections"
-          className="group absolute -translate-x-1/2 inline-flex items-center justify-center whitespace-nowrap rounded-[3px] bg-[#221c1a] text-white font-sans font-medium tracking-wide shadow-md transition-all duration-300 hover:bg-[#342a26] hover:shadow-lg"
-          style={{
-            left: "68.1%",
-            bottom: "5.6%",
-            gap: "0.5cqw",
-            padding: "0.95cqw 2.1cqw",
-            fontSize: "clamp(9px, 1.2cqw, 15px)",
-            minWidth: "23cqw",
-          }}
+          className="group absolute -translate-x-1/2 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xs bg-[#221c1a] hover:bg-black px-5 py-2.5 text-xs xl:text-sm text-white font-sans font-medium tracking-wide transition-colors"
+          style={{ right: "20%", bottom: "5.6%" }}
         >
-          <span>Discover&nbsp; The Signature Collections</span>
-          <ArrowRight className="w-[1.2em] h-[1.2em] transition-transform duration-300 group-hover:translate-x-2" />
+          <span>Discover Collections</span>
+          <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
         </Link>
       </div>
     </section>
