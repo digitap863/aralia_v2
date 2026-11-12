@@ -161,7 +161,7 @@ export default function NatureBanner() {
             left: "22.6%",
             top: "9%",
             fontSize: "6.3cqw",
-            color: GREEN,
+            color: ROSE,
           }}
         >
           Nature,
@@ -174,7 +174,7 @@ export default function NatureBanner() {
             left: "29.4%",
             top: "29.5%",
             fontSize: "3.7cqw",
-            color: GREEN,
+            color: ROSE,
           }}
         >
           Woven Into You.
@@ -183,7 +183,7 @@ export default function NatureBanner() {
         {/* Curved arrow */}
         <CurvedArrow
           className="absolute pointer-events-none"
-          style={{ left: "32.8%", top: "42%", width: "14.2%", color: GREEN }}
+          style={{ left: "32.8%", top: "42%", width: "14.2%", color: ROSE }}
         />
 
         {/* Logo (grey) */}

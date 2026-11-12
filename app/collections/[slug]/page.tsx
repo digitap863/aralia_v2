@@ -8,6 +8,12 @@ export function generateStaticParams() {
     { slug: "shapewear" },
     { slug: "sleepwear" },
     { slug: "new-arrivals" },
+    { slug: "everyday-essentials" },
+    { slug: "active-series" },
+    { slug: "seamless-comfort" },
+    { slug: "lace-bras" },
+    { slug: "shorts-collections" },
+    { slug: "lace-panties" },
   ];
 }
 

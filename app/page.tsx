@@ -27,9 +27,7 @@ export default function Home() {
         <FeaturedProducts />
       
         <Posters />
-      </RevealOnScroll>
-
-      <RevealOnScroll>
+    
         <AboutAralia />
       
         <ExploreCollection />

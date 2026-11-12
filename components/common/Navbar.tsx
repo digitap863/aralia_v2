@@ -251,9 +251,9 @@ export default function Navbar({
               onMouseEnter={() => setIsCollectionsOpen(true)}
               onMouseLeave={() => setIsCollectionsOpen(false)}
             >
-              <button
-                type="button"
-                onClick={() => setIsCollectionsOpen(!isCollectionsOpen)}
+              <Link
+                href="/collections"
+                onClick={() => setIsCollectionsOpen(false)}
                 className="inline-flex items-center gap-1.5 text-[13px] xl:text-[14px] font-medium tracking-[0.16em] text-neutral-800 hover:text-neutral-500 transition-colors uppercase group"
                 aria-expanded={isCollectionsOpen}
               >
@@ -263,7 +263,7 @@ export default function Navbar({
                     isCollectionsOpen ? "rotate-180" : ""
                   }`}
                 />
-              </button>
+              </Link>
 
               {/* Dropdown Menu */}
               {isCollectionsOpen && (
