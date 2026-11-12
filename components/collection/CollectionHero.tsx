@@ -37,10 +37,10 @@ export default function CollectionsHero() {
         />
 
         {/* Soft subtle atmospheric vignette on mobile for optimal text contrast */}
-        <div
+        {/* <div
           aria-hidden="true"
           className="absolute inset-0 bg-linear-to-r from-[#f7dfd8]/85 via-[#f7dfd8]/40 to-transparent sm:hidden pointer-events-none z-10"
-        />
+        /> */}
 
         {/* Bottom Gradient Fade into Our Story section */}
         <div

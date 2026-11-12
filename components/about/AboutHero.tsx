@@ -14,22 +14,33 @@ export default function AboutHero() {
 
   return (
     <section className="relative w-full overflow-hidden select-none bg-white">
-      {/* Background Banner Image Container - Matches natural 3:1 ratio on desktop to prevent zoom */}
-      <div className="relative w-full min-h-[300px] sm:min-h-[350px] md:min-h-0 md:aspect-3/1 flex items-center">
+      {/* Background Banner Image Container - 4:5 on mobile (mob_banner.webp), ~2.65:1 on md+ (Banner.webp) */}
+      <div className="relative w-full aspect-4/5 md:aspect-[2.65/1] flex items-start pt-10 sm:pt-14 md:items-center md:pt-0">
+        {/* Mobile Portrait Banner */}
+        <Image
+          src="/images/AboutPage/mob_banner.webp"
+          alt="About Aralia - Korean Comfort Luxury Innerwear"
+          fill
+          priority
+          sizes="100vw"
+          className="block md:hidden object-cover object-center pointer-events-none select-none"
+        />
+
+        {/* Desktop Landscape Banner */}
         <Image
           src="/images/AboutPage/Banner.webp"
           alt="About Aralia - Korean Comfort Luxury Innerwear"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[78%_center] sm:object-[70%_center] md:object-center pointer-events-none select-none"
+          className="hidden md:block object-cover object-center pointer-events-none select-none"
         />
 
         {/* Soft subtle atmospheric vignette on mobile for optimal text contrast */}
-        <div
+        {/* <div
           aria-hidden="true"
           className="absolute inset-0 bg-gradient-to-r from-[#f7dfd8]/85 via-[#f7dfd8]/40 to-transparent sm:hidden pointer-events-none z-10"
-        />
+        /> */}
 
         {/* Bottom Gradient Fade into Our Story section */}
         <div
@@ -43,7 +54,7 @@ export default function AboutHero() {
 
         {/* Text Content Overlay */}
         <div className="relative z-20 w-full px-5 sm:px-8 md:px-12 lg:px-30">
-          <div className="max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl flex flex-col items-start -translate-y-4 sm:-translate-y-6 md:-translate-y-8 lg:-translate-y-11">
+          <div className="max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl flex flex-col items-start md:-translate-y-8 lg:-translate-y-11">
             
             {/* Pill Badge */}
             <div
@@ -82,7 +93,7 @@ export default function AboutHero() {
                   : "opacity-0 translate-y-4"
               }`}
             >
-              Comfort, Confidence and <br className="hidden sm:inline" />
+              Comfort, Confidence and <br  />
               Everyday Ease for Every Woman.
             </p>
 

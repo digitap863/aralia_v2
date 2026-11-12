@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
+import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 
 interface FeatureCard {
@@ -50,7 +51,26 @@ const features: FeatureCard[] = [
 ];
 
 export default function WhyAralia() {
+  const swiperRef = useRef<SwiperType | null>(null);
   const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Auto-scrolling carousel effect on mobile
+  useEffect(() => {
+    if (isPaused) return;
+
+    const interval = setInterval(() => {
+      if (swiperRef.current) {
+        if (swiperRef.current.isEnd) {
+          swiperRef.current.slideTo(0);
+        } else {
+          swiperRef.current.slideNext();
+        }
+      }
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
 
   return (
     <section className="w-full bg-white py-10 sm:py-15 md:py-20 select-none overflow-hidden">
@@ -73,11 +93,20 @@ export default function WhyAralia() {
           <div className="flex-1 w-full px-2 sm:px-6 md:px-6 lg:px-12">
             
             {/* Mobile View: Swiper Carousel */}
-            <div className="block md:hidden w-full">
+            <div
+              className="block md:hidden w-full"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
+              onTouchStart={() => setIsPaused(true)}
+              onTouchEnd={() => setIsPaused(false)}
+            >
               <Swiper
+                onSwiper={(swiper) => {
+                  swiperRef.current = swiper;
+                }}
                 spaceBetween={14}
                 slidesPerView={2.2}
-                speed={400}
+                speed={500}
                 grabCursor={true}
                 breakpoints={{
                   0: {
@@ -127,9 +156,12 @@ export default function WhyAralia() {
               {/* Mobile Indicator Dots */}
               <div className="flex items-center justify-center gap-1.5 mt-6">
                 {features.map((_, idx) => (
-                  <div
+                  <button
                     key={idx}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                    type="button"
+                    aria-label={`Go to slide ${idx + 1}`}
+                    onClick={() => swiperRef.current?.slideTo(idx)}
+                    className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
                       idx === mobileActiveIndex
                         ? "w-5 bg-[#AC7058]"
                         : "w-1.5 bg-neutral-300"

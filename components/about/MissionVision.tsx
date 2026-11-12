@@ -121,7 +121,7 @@ export default function MissionVision() {
           </div>
 
           {/* CONTENT: fixed positions measured from the design */}
-          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-0 py-8 sm:py-10 lg:py-0 lg:h-[145px] px-6 sm:px-10 lg:pl-[100px] lg:pr-0">
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-0 py-8 sm:py-10 lg:py-0 lg:h-36.25 px-6 sm:px-10 lg:pl-25 lg:pr-0">
             {/* MISSION */}
             <div
               className={`flex items-center gap-5 lg:gap-6 transition-all duration-700 delay-150 ease-out ${
@@ -138,7 +138,7 @@ export default function MissionVision() {
                 />
               </div>
 
-              <div aria-hidden="true" className={`hidden sm:block ${DIVIDER}`} />
+             
 
               <div className="flex flex-col lg:w-80">
                 <h3 className="font-playfair text-2xl sm:text-[26px] lg:text-[36px] leading-[1.1] tracking-tight mb-2">
@@ -182,7 +182,7 @@ export default function MissionVision() {
                 />
               </div>
 
-              <div aria-hidden="true" className={`hidden sm:block ${DIVIDER}`} />
+              
 
               <div className="flex flex-col lg:w-80">
                 <h3 className="font-playfair text-2xl sm:text-[26px] lg:text-[36px] leading-[1.1] tracking-tight mb-2">
@@ -198,11 +198,7 @@ export default function MissionVision() {
               </div>
             </div>
 
-            {/* Right divider, over the ribbon */}
-            <div
-              aria-hidden="true"
-              className={`hidden lg:block ml-8 ${DIVIDER}`}
-            />
+
           </div>
         </div>
       </div>
