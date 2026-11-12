@@ -159,11 +159,12 @@ export default function Navbar({
     announcements[announcementIndex] || announcements[0];
 
   return (
+    <>
     <header
       className={`w-full sticky top-0 z-50 bg-white border-b border-neutral-100 font-sans transition-transform duration-300 ease-in-out ${
         isNavbarVisible
-          ? "translate-y-0 shadow-[0_1px_3px_rgba(0,0,0,0.03)]"
-          : "translate-y-0 lg:-translate-y-full shadow-[0_1px_3px_rgba(0,0,0,0.03)] lg:shadow-none"
+          ? "lg:translate-y-0 shadow-[0_1px_3px_rgba(0,0,0,0.03)]"
+          : "lg:-translate-y-full shadow-[0_1px_3px_rgba(0,0,0,0.03)] lg:shadow-none"
       }`}
     >
       {/* Top Announcement Bar - Dynamic Rotator with Fluid Auto-Scaling Font */}
@@ -338,8 +339,9 @@ export default function Navbar({
           </div>
         </div>
       </nav>
+    </header>
 
-      {/* Mobile Drawer Backdrop & Menu */}
+      {/* Mobile Drawer Backdrop & Menu (rendered outside <header> so transform never traps fixed positioning) */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           {/* Backdrop */}
@@ -458,7 +460,7 @@ export default function Navbar({
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }
 
