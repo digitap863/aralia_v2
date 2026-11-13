@@ -13,9 +13,8 @@ interface CollectionProductListingProps {
   titleSecondary: string;
   description?: string;
   initialProducts: ProductItem[];
+  showCollectionFilter?: boolean;
 }
-
-const ITEMS_PER_PAGE = 6;
 
 export default function CollectionProductListing({
   collectionName,
@@ -23,10 +22,25 @@ export default function CollectionProductListing({
   titleSecondary,
   description = "A range of soft, breathable and easy-to-wear innerwear for everyday comfort.",
   initialProducts,
+  showCollectionFilter = false,
 }: CollectionProductListingProps) {
   // -------------------------------------------------------------
   // 1. EXTRACT REAL DYNAMIC FILTER DATA DIRECTLY FROM PRODUCTS
   // -------------------------------------------------------------
+
+  // Real dynamic collections and counts (used when showCollectionFilter is true)
+  const dynamicCollections = useMemo(() => {
+    const map = new Map<string, number>();
+    initialProducts.forEach((p) => {
+      if (p.collection) {
+        map.set(p.collection, (map.get(p.collection) || 0) + 1);
+      }
+    });
+    return Array.from(map.entries()).map(([name, count]) => ({
+      name,
+      count,
+    }));
+  }, [initialProducts]);
 
   // Real dynamic categories and counts
   const dynamicCategories = useMemo(() => {
@@ -109,6 +123,7 @@ export default function CollectionProductListing({
   // -------------------------------------------------------------
   // 2. FILTER & SORT STATES
   // -------------------------------------------------------------
+  const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [currentMaxPrice, setCurrentMaxPrice] = useState<number>(maxPrice);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
@@ -131,6 +146,17 @@ export default function CollectionProductListing({
   }, [maxPrice]);
 
   // Handlers for toggles
+  const handleToggleCollection = (colName: string) => {
+    setCurrentPage(1);
+    if (colName === "ALL") {
+      setSelectedCollections([]);
+      return;
+    }
+    setSelectedCollections((prev) =>
+      prev.includes(colName) ? prev.filter((c) => c !== colName) : [...prev, colName]
+    );
+  };
+
   const handleToggleCategory = (categoryName: string) => {
     setCurrentPage(1);
     if (categoryName === "ALL") {
@@ -175,6 +201,7 @@ export default function CollectionProductListing({
   };
 
   const handleClearAll = () => {
+    setSelectedCollections([]);
     setSelectedCategories([]);
     setCurrentMaxPrice(maxPrice);
     setSelectedSizes([]);
@@ -184,6 +211,7 @@ export default function CollectionProductListing({
   };
 
   const hasActiveFilters =
+    selectedCollections.length > 0 ||
     selectedCategories.length > 0 ||
     currentMaxPrice < maxPrice ||
     selectedSizes.length > 0 ||
@@ -195,6 +223,14 @@ export default function CollectionProductListing({
   // -------------------------------------------------------------
   const filteredAndSortedProducts = useMemo(() => {
     const result = initialProducts.filter((product) => {
+      // 0. Collection filter (when enabled)
+      if (
+        selectedCollections.length > 0 &&
+        !selectedCollections.includes(product.collection)
+      ) {
+        return false;
+      }
+
       // 1. Category filter
       if (
         selectedCategories.length > 0 &&
@@ -257,6 +293,7 @@ export default function CollectionProductListing({
     return result;
   }, [
     initialProducts,
+    selectedCollections,
     selectedCategories,
     currentMaxPrice,
     selectedSizes,
@@ -266,18 +303,39 @@ export default function CollectionProductListing({
   ]);
 
   // -------------------------------------------------------------
-  // 4. PAGINATION CALCULATIONS
+  // 4. RESPONSIVE ITEMS PER PAGE (10 on mobile, 9 on desktop)
   // -------------------------------------------------------------
+  const [itemsPerPage, setItemsPerPage] = useState<number>(9);
+
+  useEffect(() => {
+    const updateItemsPerPage = () => {
+      // Mobile view (< 1024px lg breakpoint, 2-column grid): 10 items (5 rows × 2)
+      // Desktop view (>= 1024px, 3-column grid): 9 items (3 rows × 3)
+      setItemsPerPage(window.innerWidth < 1024 ? 10 : 9);
+    };
+
+    updateItemsPerPage();
+    window.addEventListener("resize", updateItemsPerPage);
+    return () => window.removeEventListener("resize", updateItemsPerPage);
+  }, []);
+
   const totalProducts = filteredAndSortedProducts.length;
-  const totalPages = Math.ceil(totalProducts / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(totalProducts / itemsPerPage);
+
+  // Clamp current page if itemsPerPage changes and current page exceeds totalPages
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
 
   const paginatedProducts = useMemo(() => {
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    return filteredAndSortedProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [filteredAndSortedProducts, currentPage]);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredAndSortedProducts.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredAndSortedProducts, currentPage, itemsPerPage]);
 
-  const showingStart = totalProducts === 0 ? 0 : (currentPage - 1) * ITEMS_PER_PAGE + 1;
-  const showingEnd = Math.min(currentPage * ITEMS_PER_PAGE, totalProducts);
+  const showingStart = totalProducts === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1;
+  const showingEnd = Math.min(currentPage * itemsPerPage, totalProducts);
 
   // Card click handlers
   const toggleWishlist = (id: string, e: React.MouseEvent) => {
@@ -304,12 +362,16 @@ export default function CollectionProductListing({
 
   return (
     <section className="w-full bg-[#fdfbf9] py-10 sm:py-14 md:py-16">
-      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Grid: Left Filter Sidebar + Right Products Grid */}
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
           {/* Desktop Filter Sidebar (Modular Component) */}
           <div className="hidden lg:block w-64 xl:w-72 shrink-0">
             <FilterSidebar
+              showCollectionFilter={showCollectionFilter}
+              collections={dynamicCollections}
+              selectedCollections={selectedCollections}
+              onToggleCollection={handleToggleCollection}
               categories={dynamicCategories}
               collectionName={collectionName}
               totalProductsCount={initialProducts.length}
@@ -339,10 +401,10 @@ export default function CollectionProductListing({
             <div className="mb-6 sm:mb-8">
               <h1 className="font-playfair text-2xl sm:text-3xl md:text-4xl font-normal text-neutral-900 tracking-tight leading-tight">
                 {titlePrimary}{" "}
-                <span className="font-serif  font-normal text-[#9f6e5a]">
+                <span className="font-serif font-normal text-[#9f6e5a]">
                   {titleSecondary}
                 </span>{" "}
-                Collection
+                {showCollectionFilter ? "" : "Collection"}
               </h1>
               <p className="font-sans text-xs sm:text-sm text-neutral-600 mt-2 font-light max-w-2xl">
                 {description}
@@ -459,6 +521,10 @@ export default function CollectionProductListing({
         isMobileDrawer
         isOpenMobile={isMobileFilterOpen}
         onCloseMobile={() => setIsMobileFilterOpen(false)}
+        showCollectionFilter={showCollectionFilter}
+        collections={dynamicCollections}
+        selectedCollections={selectedCollections}
+        onToggleCollection={handleToggleCollection}
         categories={dynamicCategories}
         collectionName={collectionName}
         totalProductsCount={initialProducts.length}

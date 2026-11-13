@@ -23,16 +23,16 @@ export default function Hero() {
         - Desktop / Tablet (md+): 100vh minus exact navbar height (128px) so the hero and navbar together fill exactly 100vh of screen.
         - Mobile: Locked to aspect-4/5 matching other pages' mobile hero banners.
       */}
-      <div className="relative w-full aspect-4/5 md:aspect-auto md:h-[calc(100vh-128px)] md:min-h-[560px] flex items-start pt-8 sm:pt-12 md:items-center md:pt-0 overflow-hidden">
+      <div className="relative w-full aspect-4/5 md:aspect-auto md:h-[calc(100vh-128px)] md:min-h-140 flex items-start pt-8 sm:pt-12 md:items-center md:pt-0 overflow-hidden">
         
         {/* Elegant Silk Shimmer Skeleton (Never blank while loading) */}
         <div
           aria-hidden="true"
-          className={`absolute inset-0 bg-gradient-to-br from-[#f8d4c7] via-[#f4beaa] to-[#f8d4c7] transition-opacity duration-700 pointer-events-none z-0 ${
+          className={`absolute inset-0 bg-linear-to-br from-[#f8d4c7] via-[#f4beaa] to-[#f8d4c7] transition-opacity duration-700 pointer-events-none z-0 ${
             isImageLoaded ? "opacity-0" : "opacity-100"
           }`}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer" />
+          <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/40 to-transparent animate-shimmer" />
         </div>
 
         {/* Mobile Portrait Hero Banner (4:5 Ratio matching other pages) */}

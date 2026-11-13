@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ChevronDown, Menu, X } from "lucide-react";
 import {
   dummyNavbarCollections,
+  getNavbarCollections,
   dummyAnnouncements,
   type CollectionItem,
   type AnnouncementItem,
@@ -18,9 +19,9 @@ interface NavbarProps {
 
 export default function Navbar({
   announcements = dummyAnnouncements,
-  collectionsList = dummyNavbarCollections,
+  collectionsList,
 }: NavbarProps) {
-  const collections = collectionsList;
+  const collections = collectionsList || getNavbarCollections();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
   const [isMobileCollectionsOpen, setIsMobileCollectionsOpen] = useState(false);
@@ -252,11 +253,11 @@ export default function Navbar({
                 <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 w-56 z-50">
                   <div className="bg-white rounded-sm shadow-xl border border-neutral-100 py-2.5 animate-in fade-in slide-in-from-top-1 duration-150">
                     <div className="text-[11px] font-semibold text-neutral-400 px-4 py-1 uppercase tracking-wider">
-                      Categories
+                      Collections
                     </div>
                     {collections.map((item) => (
                       <Link
-                        key={item.name}
+                        key={`${item.slug}-${item.name}`}
                         href={item.href}
                         className="block px-4 py-2 text-xs tracking-wider uppercase text-neutral-700 hover:bg-neutral-50 hover:text-neutral-950 transition-colors"
                         onClick={() => setIsCollectionsOpen(false)}
@@ -394,7 +395,7 @@ export default function Navbar({
                   <div className="pl-4 pt-2 pb-1 space-y-2.5">
                     {collections.map((item) => (
                       <Link
-                        key={item.name}
+                        key={`mobile-${item.slug}-${item.name}`}
                         href={item.href}
                         onClick={() => setIsMobileMenuOpen(false)}
                         className="block text-xs font-normal tracking-[0.12em] text-neutral-600 hover:text-neutral-900 uppercase py-1"

@@ -36,17 +36,6 @@ export interface CollectionDetail {
   mobileBannerImage?: string;
 }
 
-// 1. Navigation Collections (Used in Navbar dropdown & mobile menu)
-export const dummyNavbarCollections: CollectionItem[] = [
-  { name: "All Collections", slug: "all", href: "/collections" },
-  { name: "Bras", slug: "bras", href: "/collections/bras" },
-  { name: "Panties", slug: "panties", href: "/collections/panties" },
-  { name: "Loungewear", slug: "loungewear", href: "/collections/loungewear" },
-  { name: "Shapewear", slug: "shapewear", href: "/collections/shapewear" },
-  { name: "Sleepwear", slug: "sleepwear", href: "/collections/sleepwear" },
-  { name: "New Arrivals", slug: "new-arrivals", href: "/collections/new-arrivals" },
-];
-
 // 2. Homepage Explore Collections ("For Every Stage, Every Women")
 export const dummyExploreCollections: ExploreCollectionStage[] = [
   {
@@ -174,8 +163,44 @@ export const dummyCollectionGridItems: CollectionCardItem[] = [
 
 // Helper functions for data fetching
 export function getNavbarCollections(): CollectionItem[] {
-  return dummyNavbarCollections;
+  const seen = new Set<string>();
+  const list: CollectionItem[] = [
+    { name: "All Collections", slug: "all", href: "/collections" },
+  ];
+
+  // Derive collections directly from the collection data using their titles
+  const sources = [
+    ...dummyCollectionGridItems,
+    {
+      slug: "comfort-series",
+      titlePrimary: "Comfort",
+      titleSecondary: "Series",
+    },
+    {
+      slug: "teens",
+      titlePrimary: "Teens",
+      titleSecondary: "Collection",
+    },
+  ];
+
+  for (const item of sources) {
+    const title = `${item.titlePrimary} ${item.titleSecondary}`.trim();
+    if (!seen.has(title.toLowerCase())) {
+      seen.add(title.toLowerCase());
+      list.push({
+        name: title,
+        slug: item.slug,
+        href: `/collections/${item.slug}`,
+      });
+    }
+  }
+
+  return list;
 }
+
+// 1. Navigation Collections (Derived from collection data using titles)
+export const dummyNavbarCollections: CollectionItem[] = getNavbarCollections();
+
 
 export function getExploreCollections(): ExploreCollectionStage[] {
   return dummyExploreCollections;

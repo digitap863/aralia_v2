@@ -16,13 +16,24 @@ export interface CategoryCountItem {
   count: number;
 }
 
+export interface CollectionCountItem {
+  name: string;
+  count: number;
+}
+
 export interface CupTypeCountItem {
   type: string;
   count: number;
 }
 
 export interface FilterSidebarProps {
-  // Real dynamic data extracted from products
+  // Collection options (shown on shop page or when enabled)
+  showCollectionFilter?: boolean;
+  collections?: CollectionCountItem[];
+  selectedCollections?: string[];
+  onToggleCollection?: (collectionName: string) => void;
+
+  // Real dynamic category data extracted from products
   categories: CategoryCountItem[];
   collectionName: string;
   totalProductsCount: number;
@@ -55,6 +66,11 @@ export interface FilterSidebarProps {
 }
 
 export default function FilterSidebar({
+  showCollectionFilter = false,
+  collections = [],
+  selectedCollections = [],
+  onToggleCollection,
+
   categories,
   collectionName,
   totalProductsCount,
@@ -83,22 +99,105 @@ export default function FilterSidebar({
   onCloseMobile,
 }: FilterSidebarProps) {
   // Accordion collapsed/expanded states
+  const [isCollectionOpen, setIsCollectionOpen] = useState(true);
+  const [isCategoryOpen, setIsCategoryOpen] = useState(true);
   const [isPriceOpen, setIsPriceOpen] = useState(true);
   const [isSizeOpen, setIsSizeOpen] = useState(true);
   const [isColorsOpen, setIsColorsOpen] = useState(true);
   const [isCupOpen, setIsCupOpen] = useState(true);
 
+  const isAllCollectionsSelected = selectedCollections.length === 0;
   const isAllCategoriesSelected = selectedCategories.length === 0;
 
   const content = (
     <div className="flex flex-col gap-6">
-      {/* Category Header & Checkbox List */}
-      <div>
+      {/* 1. Collections Filter (When enabled, e.g. on Shop page) */}
+      {showCollectionFilter && collections.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between pb-3.5 border-b border-[#f0e7e1]">
+            <h3 className="font-playfair text-base sm:text-lg font-semibold text-neutral-900 tracking-tight">
+              Collections
+            </h3>
+            <SlidersHorizontal className="w-4 h-4 text-neutral-500 stroke-[1.8]" />
+          </div>
+
+          <div className="mt-3.5 space-y-2.5">
+            {/* "All Collections" option */}
+            <label className="flex items-center gap-2.5 cursor-pointer group select-none">
+              <span
+                className={`w-4 h-4 rounded-sm border flex items-center justify-center transition-colors ${
+                  isAllCollectionsSelected
+                    ? "bg-[#241d1b] border-[#241d1b] text-white"
+                    : "border-neutral-300 group-hover:border-neutral-500 bg-white"
+                }`}
+              >
+                {isAllCollectionsSelected && <Check className="w-3 h-3 stroke-[3]" />}
+              </span>
+              <span
+                className={`text-xs sm:text-[13px] font-sans transition-colors ${
+                  isAllCollectionsSelected
+                    ? "font-medium text-neutral-900"
+                    : "text-neutral-600 group-hover:text-neutral-900"
+                }`}
+              >
+                All Collections ({totalProductsCount})
+              </span>
+              <input
+                type="checkbox"
+                className="sr-only"
+                checked={isAllCollectionsSelected}
+                onChange={() => onToggleCollection?.("ALL")}
+              />
+            </label>
+
+            {/* Individual Collection items */}
+            {collections.map((col) => {
+              const isChecked = selectedCollections.includes(col.name);
+              return (
+                <label
+                  key={col.name}
+                  className="flex items-center gap-2.5 cursor-pointer group select-none"
+                >
+                  <span
+                    className={`w-4 h-4 rounded-sm border flex items-center justify-center transition-colors ${
+                      isChecked
+                        ? "bg-[#241d1b] border-[#241d1b] text-white"
+                        : "border-neutral-300 group-hover:border-neutral-500 bg-white"
+                    }`}
+                  >
+                    {isChecked && <Check className="w-3 h-3 stroke-[3]" />}
+                  </span>
+                  <span
+                    className={`text-xs sm:text-[13px] font-sans transition-colors ${
+                      isChecked
+                        ? "font-medium text-neutral-900"
+                        : "text-neutral-600 group-hover:text-neutral-900"
+                    }`}
+                  >
+                    {col.name} ({col.count})
+                  </span>
+                  <input
+                    type="checkbox"
+                    className="sr-only"
+                    checked={isChecked}
+                    onChange={() => onToggleCollection?.(col.name)}
+                  />
+                </label>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* 2. Category Header & Checkbox List */}
+      <div className={showCollectionFilter ? "pt-2 border-t border-[#f0e7e1]" : ""}>
         <div className="flex items-center justify-between pb-3.5 border-b border-[#f0e7e1]">
           <h3 className="font-playfair text-base sm:text-lg font-semibold text-neutral-900 tracking-tight">
             Category
           </h3>
-          <SlidersHorizontal className="w-4 h-4 text-neutral-500 stroke-[1.8]" />
+          {!showCollectionFilter && (
+            <SlidersHorizontal className="w-4 h-4 text-neutral-500 stroke-[1.8]" />
+          )}
         </div>
 
         {/* Real dynamic category list */}
@@ -121,7 +220,7 @@ export default function FilterSidebar({
                   : "text-neutral-600 group-hover:text-neutral-900"
               }`}
             >
-              All {collectionName} ({totalProductsCount})
+              {showCollectionFilter ? "All Categories" : `All ${collectionName}`} ({totalProductsCount})
             </span>
             <input
               type="checkbox"
@@ -416,4 +515,3 @@ export default function FilterSidebar({
     </div>
   );
 }
-
