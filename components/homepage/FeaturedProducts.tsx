@@ -7,167 +7,9 @@ import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
+import { dummyProducts, type ProductItem } from "@/data";
 
-export interface ProductItem {
-  id: string;
-  name: string;
-  subtitle: string;
-  price: number;
-  originalPrice?: number;
-  sizes: string;
-  colors: { name: string; hex: string }[];
-  image: string;
-  hoverImage?: string;
-  isBestSeller?: boolean;
-  href: string;
-}
-
-const products: ProductItem[] = [
-  {
-    id: "prod-1",
-    name: "Aralia Jelly Bra",
-    subtitle: "Soft feel | Everyday wear",
-    price: 799,
-    sizes: "Sizes 32B - 40D",
-    colors: [
-      { name: "Silver Grey", hex: "#dcdfe3" },
-      { name: "Soft Nude", hex: "#f5dccb" },
-      { name: "Blush Coral", hex: "#f29c94" },
-    ],
-    image: "/images/HomePage/Products/jelly-bra.webp",
-    hoverImage: "/images/HomePage/Products/bra.webp",
-    isBestSeller: true,
-    href: "/products/aralia-jelly-bra",
-  },
-  {
-    id: "prod-2",
-    name: "Padded Everyday Bra",
-    subtitle: "Soft feel | Everyday wear",
-    price: 699,
-    sizes: "Sizes 32B - 40D",
-    colors: [
-      { name: "Silver Grey", hex: "#dcdfe3" },
-      { name: "Soft Nude", hex: "#f5dccb" },
-      { name: "Blush Coral", hex: "#f29c94" },
-    ],
-    image: "/images/HomePage/Products/bra.webp",
-    hoverImage: "/images/HomePage/Products/bralettes.webp",
-    isBestSeller: true,
-    href: "/products/padded",
-  },
-  {
-    id: "prod-3",
-    name: "Silk Bralette",
-    subtitle: "Soft feel | Wire-free comfort",
-    price: 499,
-    sizes: "Sizes 32B - 40D",
-    colors: [
-      { name: "Silver Grey", hex: "#dcdfe3" },
-      { name: "Soft Nude", hex: "#f5dccb" },
-      { name: "Blush Coral", hex: "#f29c94" },
-    ],
-    image: "/images/HomePage/Products/bralettes.webp",
-    hoverImage: "/images/HomePage/Products/bra.webp",
-    isBestSeller: true,
-    href: "/products/silk-bralette",
-  },
-  {
-    id: "prod-4",
-    name: "Sports Wear",
-    subtitle: "Soft feel | Sports wear",
-    price: 799,
-    sizes: "Sizes 32B - 40D",
-    colors: [
-      { name: "Silver Grey", hex: "#dcdfe3" },
-      { name: "Soft Nude", hex: "#f5dccb" },
-      { name: "Blush Coral", hex: "#f29c94" },
-    ],
-    image: "/images/HomePage/Products/sports-bra.webp",
-    hoverImage: "/images/HomePage/Products/sports_v2.webp",
-    isBestSeller: true,
-    href: "/products/sports-wear",
-  },
-  {
-    id: "prod-5",
-    name: "Seamless Fit",
-    subtitle: "Soft feel | Everyday wear",
-    price: 999,
-    sizes: "Sizes 32B - 40D",
-    colors: [
-      { name: "Silver Grey", hex: "#dcdfe3" },
-      { name: "Soft Nude", hex: "#f5dccb" },
-      { name: "Blush Coral", hex: "#f29c94" },
-    ],
-    image: "/images/HomePage/Products/seamless.webp",
-    hoverImage: "/images/HomePage/Products/bra.webp",
-    isBestSeller: true,
-    href: "/products/seamless",
-  },
-  {
-    id: "prod-6",
-    name: "Shaper Bra",
-    subtitle: "Soft feel | Support & Lift",
-    price: 899,
-    sizes: "Sizes 32B - 40D",
-    colors: [
-      { name: "Silver Grey", hex: "#dcdfe3" },
-      { name: "Soft Nude", hex: "#f5dccb" },
-      { name: "Blush Coral", hex: "#f29c94" },
-    ],
-    image: "/images/HomePage/Products/shaper-bra.webp",
-    hoverImage: "/images/HomePage/Products/bralettes.webp",
-    isBestSeller: true,
-    href: "/products/shaper-bra",
-  },
-  {
-    id: "prod-7",
-    name: "Comfort Brief",
-    subtitle: "Soft feel | Daily ease",
-    price: 399,
-    sizes: "Sizes S - XXL",
-    colors: [
-      { name: "Silver Grey", hex: "#dcdfe3" },
-      { name: "Soft Nude", hex: "#f5dccb" },
-      { name: "Blush Coral", hex: "#f29c94" },
-    ],
-    image: "/images/HomePage/Products/panties.webp",
-    hoverImage: "/images/HomePage/Products/bralettes.webp",
-    isBestSeller: true,
-    href: "/products/comfort-brief",
-  },
-  {
-    id: "prod-8",
-    name: "Soft Loungewear",
-    subtitle: "Soft feel | Everyday wear",
-    price: 1199,
-    sizes: "Sizes XS - XL",
-    colors: [
-      { name: "Silver Grey", hex: "#dcdfe3" },
-      { name: "Soft Nude", hex: "#f5dccb" },
-      { name: "Blush Coral", hex: "#f29c94" },
-    ],
-    image: "/images/HomePage/Products/loungewear.webp",
-    hoverImage: "/images/HomePage/Products/sleepwear.webp",
-    isBestSeller: true,
-    href: "/products/soft-loungewear",
-  },
-  {
-    id: "prod-9",
-    name: "Dreamy Sleepwear",
-    subtitle: "Soft feel | Night comfort",
-    price: 1299,
-    sizes: "Sizes XS - XL",
-    colors: [
-      { name: "Silver Grey", hex: "#dcdfe3" },
-      { name: "Soft Nude", hex: "#f5dccb" },
-      { name: "Blush Coral", hex: "#f29c94" },
-    ],
-    image: "/images/HomePage/Products/sleepwear.webp",
-    hoverImage: "/images/HomePage/Products/loungewear.webp",
-    isBestSeller: false,
-    href: "/products/dreamy-sleepwear",
-  },
-];
+export type { ProductItem };
 
 export function ProductCardSkeleton() {
   return (
@@ -205,10 +47,12 @@ export function ProductCardSkeleton() {
 }
 
 interface FeaturedProductsProps {
+  products?: ProductItem[];
   initialLoading?: boolean;
 }
 
 export default function FeaturedProducts({
+  products = dummyProducts,
   initialLoading = true,
 }: FeaturedProductsProps) {
   const swiperRef = useRef<SwiperType | null>(null);

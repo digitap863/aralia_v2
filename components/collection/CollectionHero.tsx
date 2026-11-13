@@ -3,7 +3,23 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
-export default function CollectionsHero() {
+export interface CollectionHeroProps {
+  badge?: string;
+  titlePrimary?: string;
+  titleSecondary?: string;
+  description?: string;
+  bannerImage?: string;
+  mobileBannerImage?: string;
+}
+
+export default function CollectionsHero({
+  badge = "Explore",
+  titlePrimary = "OUR",
+  titleSecondary = "Collections",
+  description = "Comfort, Confidence and Everyday Ease for Every Woman.",
+  bannerImage = "/images/Collections/Banner.webp",
+  mobileBannerImage = "/images/Collections/mob_Banner.webp",
+}: CollectionHeroProps) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -18,8 +34,8 @@ export default function CollectionsHero() {
       <div className="relative w-full aspect-4/5 md:aspect-3/1 flex items-start pt-8 sm:pt-12 md:items-center md:pt-0">
         {/* Mobile Portrait Banner (4:5) */}
         <Image
-          src="/images/Collections/mob_Banner.webp"
-          alt="Aralia Collections - Korean Comfort Luxury Innerwear"
+          src={mobileBannerImage}
+          alt={`${titlePrimary} ${titleSecondary} - Aralia Korean Comfort`}
           fill
           priority
           sizes="100vw"
@@ -28,8 +44,8 @@ export default function CollectionsHero() {
 
         {/* Desktop Landscape Banner (3:1, uncropped without object-cover) */}
         <Image
-          src="/images/Collections/Banner.webp"
-          alt="Aralia Collections - Korean Comfort Luxury Innerwear"
+          src={bannerImage}
+          alt={`${titlePrimary} ${titleSecondary} - Aralia Korean Comfort`}
           fill
           priority
           sizes="100vw"
@@ -65,7 +81,7 @@ export default function CollectionsHero() {
               }`}
             >
               <span className="inline-flex items-center px-3 sm:px-3.5 py-1 rounded-full border border-[#AC7058]/60 backdrop-blur-xs text-[9px] sm:text-[10px] md:text-[11px] font-sans tracking-[0.18em] uppercase text-black shadow-2xs">
-                Explore
+                {badge}
               </span>
             </div>
 
@@ -78,10 +94,10 @@ export default function CollectionsHero() {
               }`}
             >
               <span className="text-[#19191d] font-normal mr-2 sm:mr-3">
-                OUR
+                {titlePrimary}
               </span>
               <span className="text-[#9f6e5a] font-normal">
-                Collections
+                {titleSecondary}
               </span>
             </h1>
 
@@ -93,8 +109,7 @@ export default function CollectionsHero() {
                   : "opacity-0 translate-y-4"
               }`}
             >
-              Comfort, Confidence and <br className="hidden sm:inline" />
-              Everyday Ease for Every Woman.
+              {description}
             </p>
 
           </div>

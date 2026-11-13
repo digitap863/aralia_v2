@@ -1,17 +1,52 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 export default function BrandPromise() {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node) return;
+
+    if (!("IntersectionObserver" in window)) {
+      const timer = setTimeout(() => setIsVisible(true), 60);
+      return () => clearTimeout(timer);
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="relative w-full overflow-hidden bg-[#261f1d] select-none py-10 sm:py-12 md:py-14 lg:py-16">
+    <section
+      ref={sectionRef}
+      className="relative w-full overflow-hidden bg-[#261f1d] select-none py-10 sm:py-12 md:py-14 lg:py-16"
+    >
       {/* Background with warm ambient lighting gradient matching the reference */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#241d1b] via-[#352925] to-[#221a19] pointer-events-none" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_45%_50%,rgba(120,86,72,0.3),transparent_70%)] pointer-events-none" />
 
       {/* Flowing Ribbon Image (Center) */}
-      <div className="absolute left-[32%] sm:left-[36%] md:left-[39%] lg:left-[41%] top-0 h-[115%] sm:h-[120%] w-[220px] sm:w-[285px] md:w-[340px] lg:w-[410px] pointer-events-none select-none z-10 hidden sm:block">
+      <div
+        className={`absolute left-[32%] sm:left-[36%] md:left-[39%] lg:left-[41%] top-0 h-[115%] sm:h-[120%] w-[220px] sm:w-[285px] md:w-[340px] lg:w-[410px] pointer-events-none select-none z-10 hidden sm:block transition-all duration-1000 ease-out ${
+          isVisible
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 -translate-y-8"
+        }`}
+      >
         <Image
           src="/images/HomePage/OurBrand/ribbon.webp"
           alt="Aralia Satin Ribbon"
@@ -23,7 +58,13 @@ export default function BrandPromise() {
       </div>
 
       {/* Bottom-Left Flower (High-Resolution Soft Petals) */}
-      <div className="absolute -bottom-12 -left-8 sm:-bottom-3 sm:-left-3 w-28 sm:w-36 md:w-44 lg:w-52 pointer-events-none select-none z-0">
+      <div
+        className={`absolute -bottom-12 -left-8 sm:-bottom-3 sm:-left-3 w-28 sm:w-36 md:w-44 lg:w-52 pointer-events-none select-none z-0 transition-all duration-1000 delay-150 ease-out ${
+          isVisible
+            ? "opacity-100 translate-x-0 translate-y-0 scale-100"
+            : "opacity-0 -translate-x-6 translate-y-6 scale-95"
+        }`}
+      >
         <Image
           src="/images/HomePage/OurBrand/flower-soft.webp"
           alt="Aralia Blossom"
@@ -34,7 +75,13 @@ export default function BrandPromise() {
       </div>
 
       {/* Top-Right Flower (High-Resolution Crisp Cherry Blossom) */}
-      <div className="absolute -top-10 -right-10 sm:-top-25 sm:-right-25 w-32 sm:w-44 md:w-52 lg:w-60 pointer-events-none select-none z-0">
+      <div
+        className={`absolute -top-10 -right-10 sm:-top-25 sm:-right-25 w-32 sm:w-44 md:w-52 lg:w-60 pointer-events-none select-none z-0 transition-all duration-1000 delay-150 ease-out ${
+          isVisible
+            ? "opacity-100 translate-x-0 translate-y-0 scale-100"
+            : "opacity-0 translate-x-6 -translate-y-6 scale-95"
+        }`}
+      >
         <Image
           src="/images/HomePage/OurBrand/flower-crisp.webp"
           alt="Cherry Blossom"
@@ -49,7 +96,13 @@ export default function BrandPromise() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 md:gap-4 items-center">
           
           {/* Left Column: Brand Promise Headline */}
-          <div className="md:col-span-5 lg:col-span-5">
+          <div
+            className={`md:col-span-5 lg:col-span-5 transition-all duration-800 delay-150 ease-out ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-5"
+            }`}
+          >
             <span className="block text-[10px] sm:text-[11px] font-sans font-medium tracking-[0.18em] uppercase text-[#d6cdc7] mb-2 sm:mb-2.5">
               OUR BRAND PROMISE
             </span>
@@ -63,7 +116,13 @@ export default function BrandPromise() {
           <div className="hidden md:block md:col-span-2 lg:col-span-2" aria-hidden="true" />
 
           {/* Right Column: Narrative Description */}
-          <div className="md:col-span-5 lg:col-span-5 md:pl-2 lg:pl-4">
+          <div
+            className={`md:col-span-5 lg:col-span-5 md:pl-2 lg:pl-4 transition-all duration-800 delay-300 ease-out ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-5"
+            }`}
+          >
             <p className="font-sans text-xs sm:text-[13px] md:text-sm lg:text-[15px] text-[#d6cdc7] font-light leading-relaxed max-w-md sm:max-w-lg">
               At Aralia, we believe that comfort is not a luxury; it is an everyday essential. Every woman deserves innerwear that feels right, fits well, and helps her embrace life with confidence.
             </p>

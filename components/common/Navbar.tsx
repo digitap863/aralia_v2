@@ -1,63 +1,26 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown, Menu, X } from "lucide-react";
-
-
-interface CollectionItem {
-  name: string;
-  href: string;
-  description?: string;
-}
-
-export interface AnnouncementItem {
-  id: string;
-  text: string;
-  mobileText?: string;
-  highlight?: string;
-  code?: string;
-  link?: string;
-}
-
-const defaultAnnouncements: AnnouncementItem[] = [
-  {
-    id: "ann-1",
-    text: "Free Shipping Over ₹2000 — Use code",
-    code: "SUMMER20",
-  },
-  {
-    id: "ann-2",
-    text: "Buy Any 2 Bras & Get 1 FREE",
-    highlight: "Limited Time Festive Offer",
-    link: "/offers/festive-combo",
-  },
-  {
-    id: "ann-3",
-    text: "Feather-Touch Korean Comfort Innerwear Collection",
-    highlight: "Explore New Arrivals →",
-    link: "/collections/new-arrivals",
-  },
-];
-
-const collections: CollectionItem[] = [
-  { name: "All Collections", href: "/collections" },
-  { name: "Bras", href: "/collections/bras" },
-  { name: "Panties", href: "/collections/panties" },
-  { name: "Loungewear", href: "/collections/loungewear" },
-  { name: "Shapewear", href: "/collections/shapewear" },
-  { name: "Sleepwear", href: "/collections/sleepwear" },
-  { name: "New Arrivals", href: "/collections/new-arrivals" },
-];
+import {
+  dummyNavbarCollections,
+  dummyAnnouncements,
+  type CollectionItem,
+  type AnnouncementItem,
+} from "@/data";
 
 interface NavbarProps {
   announcements?: AnnouncementItem[];
+  collectionsList?: CollectionItem[];
 }
 
 export default function Navbar({
-  announcements = defaultAnnouncements,
+  announcements = dummyAnnouncements,
+  collectionsList = dummyNavbarCollections,
 }: NavbarProps) {
+  const collections = collectionsList;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCollectionsOpen, setIsCollectionsOpen] = useState(false);
   const [isMobileCollectionsOpen, setIsMobileCollectionsOpen] = useState(false);
@@ -65,7 +28,25 @@ export default function Navbar({
   const [isAnnouncementFading, setIsAnnouncementFading] = useState(false);
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const closeDropdownTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastScrollY = useRef(0);
+
+  const handleOpenCollections = () => {
+    if (closeDropdownTimer.current) {
+      clearTimeout(closeDropdownTimer.current);
+      closeDropdownTimer.current = null;
+    }
+    setIsCollectionsOpen(true);
+  };
+
+  const handleCloseCollections = () => {
+    if (closeDropdownTimer.current) {
+      clearTimeout(closeDropdownTimer.current);
+    }
+    closeDropdownTimer.current = setTimeout(() => {
+      setIsCollectionsOpen(false);
+    }, 150);
+  };
 
   // Smart sticky navbar: hide on scroll down, show on scroll up (desktop view only)
   useEffect(() => {
@@ -249,13 +230,13 @@ export default function Navbar({
             <div
               className="relative"
               ref={dropdownRef}
-              onMouseEnter={() => setIsCollectionsOpen(true)}
-              onMouseLeave={() => setIsCollectionsOpen(false)}
+              onMouseEnter={handleOpenCollections}
+              onMouseLeave={handleCloseCollections}
             >
               <Link
                 href="/collections"
                 onClick={() => setIsCollectionsOpen(false)}
-                className="inline-flex items-center gap-1.5 text-[13px] xl:text-[14px] font-medium tracking-[0.16em] text-neutral-800 hover:text-neutral-500 transition-colors uppercase group"
+                className="inline-flex items-center gap-1.5 text-[13px] xl:text-[14px] font-medium tracking-[0.16em] text-neutral-800 hover:text-neutral-500 transition-colors uppercase group py-2"
                 aria-expanded={isCollectionsOpen}
               >
                 <span>COLLECTIONS</span>
@@ -266,22 +247,24 @@ export default function Navbar({
                 />
               </Link>
 
-              {/* Dropdown Menu */}
+              {/* Dropdown Menu (pt-3 acts as a seamless hover bridge so moving down never triggers mouseLeave) */}
               {isCollectionsOpen && (
-                <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-56 bg-white rounded-sm shadow-xl border border-neutral-100 py-2.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                  <div className="text-[11px] font-semibold text-neutral-400 px-4 py-1 uppercase tracking-wider">
-                    Categories
+                <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 w-56 z-50">
+                  <div className="bg-white rounded-sm shadow-xl border border-neutral-100 py-2.5 animate-in fade-in slide-in-from-top-1 duration-150">
+                    <div className="text-[11px] font-semibold text-neutral-400 px-4 py-1 uppercase tracking-wider">
+                      Categories
+                    </div>
+                    {collections.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="block px-4 py-2 text-xs tracking-wider uppercase text-neutral-700 hover:bg-neutral-50 hover:text-neutral-950 transition-colors"
+                        onClick={() => setIsCollectionsOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
                   </div>
-                  {collections.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="block px-4 py-2 text-xs tracking-wider uppercase text-neutral-700 hover:bg-neutral-50 hover:text-neutral-950 transition-colors"
-                      onClick={() => setIsCollectionsOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
                 </div>
               )}
             </div>
@@ -343,18 +326,18 @@ export default function Navbar({
 
       {/* Mobile Drawer Backdrop & Menu (rendered outside <header> so transform never traps fixed positioning) */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-[100] lg:hidden">
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity duration-300"
+            className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity duration-300"
             onClick={() => setIsMobileMenuOpen(false)}
             aria-hidden="true"
           />
 
           {/* Drawer Sidebar */}
-          <div className="fixed inset-y-0 left-0 w-full max-w-xs sm:max-w-sm bg-white shadow-2xl flex flex-col z-50 animate-in slide-in-from-left duration-300">
+          <div className="fixed inset-y-0 left-0 w-full max-w-xs sm:max-w-sm h-full h-dvh bg-white shadow-2xl flex flex-col z-[101] transition-transform duration-300 ease-out">
             {/* Drawer Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-neutral-100">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-neutral-100 shrink-0">
               <div className="relative h-12 w-28">
                 <Image
                   src="/images/logo.webp"
@@ -375,7 +358,7 @@ export default function Navbar({
             </div>
 
             {/* Navigation links */}
-            <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">
+            <div className="flex-1 min-h-0 overflow-y-auto px-6 py-6 space-y-4">
               <Link
                 href="/"
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -452,7 +435,7 @@ export default function Navbar({
             </div>
 
             {/* Drawer Footer */}
-            <div className="p-6 bg-neutral-50 border-t border-neutral-100">
+            <div className="p-6 bg-neutral-50 border-t border-neutral-100 shrink-0">
               <p className="text-xs text-neutral-500 tracking-wider text-center uppercase">
                 Premium Innerwear • Made for Her
               </p>

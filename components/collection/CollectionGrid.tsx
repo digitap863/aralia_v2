@@ -3,17 +3,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  dummyCollectionGridItems,
+  dummyCollectionGridCategories,
+  type CollectionCardItem,
+} from "@/data";
 
-export interface CollectionCardItem {
-  id: string;
-  slug: string;
-  category: string;
-  titlePrimary: string;
-  titleSecondary: string;
-  description: string;
-  image: string;
-  alt?: string;
-}
+export type { CollectionCardItem };
 
 export interface CollectionGridProps {
   items?: CollectionCardItem[];
@@ -21,100 +17,9 @@ export interface CollectionGridProps {
   basePath?: string;
 }
 
-const defaultCategories: string[] = [
-  "ALL CATEGORIES",
-  "COMFORT SERIES",
-  "ACTIVE SERIES",
-  "TEENS",
-  "SHAPING SERIES",
-  "SPECIAL EDITS",
-];
-
-const defaultCollections: CollectionCardItem[] = [
-  {
-    id: "everyday-essentials-1",
-    slug: "everyday-essentials",
-    category: "COMFORT SERIES",
-    titlePrimary: "Everyday",
-    titleSecondary: "Essentials",
-    description: "All-day comfort for your everyday life",
-    image: "/images/Dummydata/collection/everyday1.webp",
-    alt: "Everyday Essentials - Korean comfort innerwear",
-  },
-  {
-    id: "active-series",
-    slug: "active-series",
-    category: "ACTIVE SERIES",
-    titlePrimary: "Active",
-    titleSecondary: "Series",
-    description: "All-day comfort for your everyday life",
-    image: "/images/Dummydata/collection/active1.webp",
-    alt: "Active Series - Breathable supportive sports bra",
-  },
-  {
-    id: "everyday-essentials-2",
-    slug: "seamless-comfort",
-    category: "TEENS",
-    titlePrimary: "Everyday",
-    titleSecondary: "Essentials",
-    description: "All-day comfort for your everyday life",
-    image: "/images/Dummydata/collection/everyday2.webp",
-    alt: "Everyday Essentials - Seamless lilac comfort bra",
-  },
-  {
-    id: "lace-collections-1",
-    slug: "lace-bras",
-    category: "SHAPING SERIES",
-    titlePrimary: "Lace",
-    titleSecondary: "Collections",
-    description: "All-day comfort for your everyday life",
-    image: "/images/Dummydata/collection/lace1.webp",
-    alt: "Lace Collections - Delicate blush lace bra",
-  },
-  {
-    id: "shorts-collections",
-    slug: "shorts-collections",
-    category: "SPECIAL EDITS",
-    titlePrimary: "Shorts",
-    titleSecondary: "Collections",
-    description: "All-day comfort for your everyday life",
-    image: "/images/Dummydata/collection/shots.webp",
-    alt: "Shorts Collections - Soft everyday cycling shorts",
-  },
-  {
-    id: "lace-collections-2",
-    slug: "lace-panties",
-    category: "SPECIAL EDITS",
-    titlePrimary: "Lace",
-    titleSecondary: "Collections",
-    description: "All-day comfort for your everyday life",
-    image: "/images/Dummydata/collection/lace2.webp",
-    alt: "Lace Collections - Soft lace trim panties trio",
-  },
-  {
-    id: "lace-collections-3",
-    slug: "lace-panties",
-    category: "SPECIAL EDITS",
-    titlePrimary: "Lace",
-    titleSecondary: "Collections",
-    description: "All-day comfort for your everyday life",
-    image: "/images/Dummydata/collection/lace3.webp",
-    alt: "Lace Collections - Soft lace trim panties trio",
-  },{
-    id: "lace-collections-4",
-    slug: "lace-panties",
-    category: "SPECIAL EDITS",
-    titlePrimary: "Camisole",
-    titleSecondary: "Collections",
-    description: "All-day comfort for your everyday life",
-    image: "/images/Dummydata/collection/camisole.webp",
-    alt: "Lace Collections - Soft lace trim panties trio",
-  },
-];
-
 export default function CollectionGrid({
-  items = defaultCollections,
-  categories = defaultCategories,
+  items = dummyCollectionGridItems,
+  categories = dummyCollectionGridCategories,
   basePath = "/collections",
 }: CollectionGridProps) {
   const [activeCategory, setActiveCategory] = useState<string>(

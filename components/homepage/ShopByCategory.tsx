@@ -7,72 +7,17 @@ import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
+import { dummyCategories, type CategoryItem } from "@/data";
 
-export interface CategoryItem {
-  id: string;
-  name: string;
-  image: string;
-  href: string;
+export type { CategoryItem };
+
+interface ShopByCategoryProps {
+  categories?: CategoryItem[];
 }
 
-const categories: CategoryItem[] = [
-  {
-    id: "cat-1",
-    name: "Bra",
-    image: "/images/HomePage/Categories/bra.webp",
-    href: "/collections/bras",
-  },
-  {
-    id: "cat-2",
-    name: "Jelly Bra",
-    image: "/images/HomePage/Categories/jelly-bra.webp",
-    href: "/collections/jelly-bra",
-  },
-  {
-    id: "cat-3",
-    name: "Panties",
-    image: "/images/HomePage/Categories/panties.webp",
-    href: "/collections/panties",
-  },
-  {
-    id: "cat-4",
-    name: "Sports Bra",
-    image: "/images/HomePage/Categories/sports-bra.webp",
-    href: "/collections/sports-bras",
-  },
-  {
-    id: "cat-5",
-    name: "Shaper Bra",
-    image: "/images/HomePage/Categories/shaper-bra.webp",
-    href: "/collections/shaper-bras",
-  },
-  {
-    id: "cat-6",
-    name: "Bralettes",
-    image: "/images/HomePage/Categories/bralettes.webp",
-    href: "/collections/bralettes",
-  },
-  {
-    id: "cat-7",
-    name: "Silk Loungewear",
-    image: "/images/HomePage/Categories/loungewear.webp",
-    href: "/collections/loungewear",
-  },
-  {
-    id: "cat-8",
-    name: "Sleepwear",
-    image: "/images/HomePage/Categories/sleepwear.webp",
-    href: "/collections/sleepwear",
-  },
-  {
-    id: "cat-9",
-    name: "Seamless Sets",
-    image: "/images/HomePage/Categories/seamless.webp",
-    href: "/collections/seamless",
-  },
-];
-
-export default function ShopByCategory() {
+export default function ShopByCategory({
+  categories = dummyCategories,
+}: ShopByCategoryProps) {
   const swiperRef = useRef<SwiperType | null>(null);
   const [activeSnapIndex, setActiveSnapIndex] = useState(0);
   const [totalSnaps, setTotalSnaps] = useState(5);

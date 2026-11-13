@@ -6,51 +6,17 @@ import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
+import {
+  dummyExploreCollections,
+  type ExploreCollectionStage,
+} from "@/data";
 
-export interface CollectionStage {
-  id: string;
-  category: string;
-  title: string;
-  subtitle: string;
-  image: string;
-  href: string;
-  ctaText?: string;
-}
-
-const defaultCollections: CollectionStage[] = [
-  {
-    id: "stage-teens",
-    category: "Teens",
-    title: "Teens",
-    subtitle: "Comfort-first essentials for growing bodies.",
-    image: "/images/HomePage/Collection/Teens.webp",
-    href: "/collections/teens",
-    ctaText: "ADD TO CART",
-  },
-  {
-    id: "stage-young-women",
-    category: "Young Women",
-    title: "Young Women",
-    subtitle: "Fresh styles for your everyday life.",
-    image: "/images/HomePage/Collection/YoungWomen.webp",
-    href: "/collections/young-women",
-    ctaText: "ADD TO CART",
-  },
-  {
-    id: "stage-women",
-    category: "Women",
-    title: "Women",
-    subtitle: "Everyday comfort, beautifully elevated.",
-    image: "/images/HomePage/Collection/Womens.webp",
-    href: "/collections/women",
-    ctaText: "ADD TO CART",
-  },
-];
+export type CollectionStage = ExploreCollectionStage;
 
 export function CollectionCardSkeleton() {
   return (
     <div className="relative w-full aspect-1140/1380 rounded-[20px] overflow-hidden border border-[#ecc9c1]/60 bg-[#faeee8] shadow-[0_6px_14px_rgba(110,50,50,0.1)] select-none">
-      <div className="absolute inset-0 bg-gradient-to-r from-[#faeee8] via-[#f7ded5] to-[#faeee8] animate-pulse" />
+      <div className="absolute inset-0 bg-linear-to-r from-[#faeee8] via-[#f7ded5] to-[#faeee8] animate-pulse" />
       {/* Skeleton Top Details */}
       <div className="absolute top-8 inset-x-6 flex flex-col items-center">
         <div className="w-8 h-8 rounded-full bg-white/40 mb-3 animate-pulse" />
@@ -79,24 +45,25 @@ const SECTION_BG =
   "linear-gradient(to bottom, #f7f7f5 0%, #f8e6e1 22%, #ecc9c1 40%, #dba9a0 52%, #ebcfc8 66%, #f5ece9 84%, #f7f7f5 100%)";
 
 export default function ExploreCollection({
-  collections = defaultCollections,
+  collections = dummyExploreCollections,
   badgeText = "EXPLORE OUR COLLECTION",
   headline = "For Every Stage, Every Women",
   description = "Discover everyday essentials designed for every stage of life, from first-fit comfort to timeless everyday elegance.",
-  initialLoading = true,
+  initialLoading = false,
 }: ExploreCollectionProps) {
   const swiperRef = useRef<SwiperType | null>(null);
   const [isLoading, setIsLoading] = useState(initialLoading);
-  const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
   const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 600);
-    return () => clearTimeout(timer);
-  }, []);
+    if (initialLoading) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [initialLoading]);
 
   // Auto-scrolling carousel effect on a 3-second timeout
   useEffect(() => {
@@ -164,24 +131,21 @@ export default function ExploreCollection({
                 key={item.id}
                 href={item.href}
                 aria-label={`${item.category} Collection`}
-                className="group block relative w-full aspect-1140/1380 rounded-[20px] overflow-hidden shadow-[0_6px_14px_rgba(110,50,50,0.22)] hover:shadow-[0_14px_30px_rgba(110,50,50,0.28)] transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#AC7058]/50"
+                className="group block relative w-full aspect-1140/1380 rounded-[20px] overflow-hidden border border-[#ecc9c1]/60 bg-[#faeee8] shadow-[0_6px_14px_rgba(110,50,50,0.18)] hover:shadow-[0_14px_30px_rgba(110,50,50,0.25)] transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#AC7058]/50"
               >
-                {/* Shimmer Placeholder until image loads */}
-                {!loadedImages[item.id] && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#faeee8] via-[#f7ded5] to-[#faeee8] animate-pulse z-0" />
-                )}
-
                 <Image
                   src={item.image}
                   alt={`${item.category} Collection - Aralia`}
                   fill
-                  onLoad={() =>
-                    setLoadedImages((prev) => ({ ...prev, [item.id]: true }))
-                  }
-                  sizes="(max-width: 1024px) 33vw, 320px"
-                  className={`object-cover object-center transition-all duration-500 group-hover:scale-[1.02] pointer-events-none select-none z-1 ${
-                    loadedImages[item.id] ? "opacity-100" : "opacity-0"
-                  }`}
+                  priority
+                  sizes="(max-width: 1024px) 33vw, 380px"
+                  className="object-cover object-center transition-all duration-500 group-hover:scale-[1.02] pointer-events-none select-none z-1"
+                />
+
+                {/* Soft warm silk tone harmonization overlay to eliminate washed-out white zones */}
+                <div
+                  className="absolute inset-0 bg-gradient-to-t from-[#f6ded8]/60 via-transparent to-[#f8e5e0]/35 pointer-events-none z-2"
+                  aria-hidden="true"
                 />
               </Link>
             ))}
@@ -228,26 +192,21 @@ export default function ExploreCollection({
                   <Link
                     href={item.href}
                     aria-label={`${item.category} Collection`}
-                    className="group block relative w-full aspect-1140/1380 rounded-[20px] overflow-hidden shadow-[0_6px_14px_rgba(110,50,50,0.22)] active:scale-[0.99] transition-all duration-300"
+                    className="group block relative w-full aspect-1140/1380 rounded-[20px] overflow-hidden border border-[#ecc9c1]/60 bg-[#faeee8] shadow-[0_6px_14px_rgba(110,50,50,0.18)] active:scale-[0.99] transition-all duration-300"
                   >
-                    {!loadedImages[item.id] && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#faeee8] via-[#f7ded5] to-[#faeee8] animate-pulse z-0" />
-                    )}
-
                     <Image
                       src={item.image}
                       alt={`${item.category} Collection - Aralia`}
                       fill
-                      onLoad={() =>
-                        setLoadedImages((prev) => ({
-                          ...prev,
-                          [item.id]: true,
-                        }))
-                      }
+                      priority
                       sizes="90vw"
-                      className={`object-cover object-center pointer-events-none select-none z-1 transition-opacity duration-300 ${
-                        loadedImages[item.id] ? "opacity-100" : "opacity-0"
-                      }`}
+                      className="object-cover object-center pointer-events-none select-none z-1"
+                    />
+
+                    {/* Soft warm silk tone harmonization overlay to eliminate washed-out white zones */}
+                    <div
+                      className="absolute inset-0 bg-gradient-to-t from-[#f6ded8]/60 via-transparent to-[#f8e5e0]/35 pointer-events-none z-2"
+                      aria-hidden="true"
                     />
                   </Link>
                 </SwiperSlide>

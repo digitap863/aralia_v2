@@ -5,6 +5,7 @@ import Image from "next/image";
 
 export default function AboutHero() {
   const [isMounted, setIsMounted] = useState(false);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   useEffect(() => {
     // Trigger smooth fade-in after mount
@@ -15,7 +16,18 @@ export default function AboutHero() {
   return (
     <section className="relative w-full overflow-hidden select-none bg-white">
       {/* Background Banner Image Container - 4:5 on mobile (mob_banner.webp), ~2.65:1 on md+ (Banner.webp) */}
-      <div className="relative w-full aspect-4/5 md:aspect-[2.65/1] flex items-start pt-10 sm:pt-14 md:items-center md:pt-0">
+      <div className="relative w-full aspect-4/5 md:aspect-[2.65/1] flex items-start pt-10 sm:pt-14 md:items-center md:pt-0 overflow-hidden">
+        
+        {/* Elegant Silk Shimmer Skeleton (Never blank while loading) */}
+        <div
+          aria-hidden="true"
+          className={`absolute inset-0 bg-gradient-to-br from-[#faeee9] via-[#f7ded7] to-[#faeee9] transition-opacity duration-700 pointer-events-none z-0 ${
+            isImageLoaded ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer" />
+        </div>
+
         {/* Mobile Portrait Banner */}
         <Image
           src="/images/AboutPage/mob_banner.webp"
@@ -23,7 +35,12 @@ export default function AboutHero() {
           fill
           priority
           sizes="100vw"
-          className="block md:hidden object-cover object-center pointer-events-none select-none"
+          onLoad={() => setIsImageLoaded(true)}
+          className={`block md:hidden object-cover object-center pointer-events-none select-none transition-all duration-1000 ease-out z-1 ${
+            isImageLoaded
+              ? "opacity-100 translate-y-0 scale-100"
+              : "opacity-0 -translate-y-4 scale-102"
+          }`}
         />
 
         {/* Desktop Landscape Banner */}
@@ -33,7 +50,12 @@ export default function AboutHero() {
           fill
           priority
           sizes="100vw"
-          className="hidden md:block object-cover object-center pointer-events-none select-none"
+          onLoad={() => setIsImageLoaded(true)}
+          className={`hidden md:block object-cover object-center pointer-events-none select-none transition-all duration-1000 ease-out z-1 ${
+            isImageLoaded
+              ? "opacity-100 translate-y-0 scale-100"
+              : "opacity-0 -translate-y-4 scale-102"
+          }`}
         />
 
         {/* Soft subtle atmospheric vignette on mobile for optimal text contrast */}
