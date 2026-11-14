@@ -80,24 +80,24 @@ export default function Hero() {
 
         {/* Content Container */}
         <div className="relative z-10 w-full px-5 sm:px-8 md:px-12 lg:px-16 xl:px-20 max-w-7xl">
-          <div className="max-w-[280px] xs:max-w-[320px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
+          <div className="max-w-[310px] xs:max-w-[340px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
             
             {/* Pill Badge */}
             <div
-              className={`inline-block mb-2 sm:mb-3 md:mb-4 transition-all duration-700 ease-out ${
+              className={`inline-block mt-2 mb-2 sm:mb-3 md:mb-4 transition-all duration-700 ease-out ${
                 isMounted
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-3"
               }`}
             >
-              <span className="inline-flex items-center px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full border border-neutral-400/60 backdrop-blur-xs text-[9px] sm:text-[10px] md:text-[11px] font-sans font-medium tracking-[0.14em] uppercase text-neutral-700">
+              <span className="inline-flex items-center px-3 sm:px-3 py-0.5 sm:py-1 rounded-full border border-neutral-400/60 backdrop-blur-xs text-[10.5px] sm:text-[11px] md:text-[11px] font-sans font-medium tracking-[0.14em] uppercase text-neutral-700">
                 KOREAN COMFORT
               </span>
             </div>
 
             {/* Headline with Playfair Display (Scales gracefully from mobile to desktop) */}
             <h1
-              className={`font-playfair text-3xl sm:text-4xl md:text-5xl lg:text-[72px] leading-[1.12] tracking-tight transition-all duration-800 delay-150 ease-out ${
+              className={`font-playfair text-[36px] xs:text-[40px] sm:text-4xl md:text-5xl lg:text-[72px] leading-[1.1] tracking-tight transition-all duration-800 delay-150 ease-out ${
                 isMounted
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-4"
@@ -113,7 +113,7 @@ export default function Hero() {
 
             {/* Subtitle with Sans font */}
             <p
-              className={`mt-2 sm:mt-3 md:mt-4 text-[11px] sm:text-xs md:text-sm lg:text-[15px] font-sans text-neutral-700 font-normal leading-relaxed max-w-67.5 sm:max-w-sm md:max-w-md lg:max-w-lg transition-all duration-800 delay-300 ease-out ${
+              className={`mt-3 sm:mt-3 md:mt-4 text-[13px] sm:text-[13px] md:text-sm lg:text-[15px] font-sans text-neutral-700 font-normal leading-relaxed max-w-75  sm:max-w-sm md:max-w-md lg:max-w-lg transition-all duration-800 delay-300 ease-out ${
                 isMounted
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-4"
@@ -193,10 +193,10 @@ export default function Hero() {
 
               {/* Card Text */}
               <div className="pr-2 sm:pr-3">
-                <p className="font-playfair italic text-[#c24747] font-medium text-[10px] sm:text-[11px] md:text-xs leading-tight">
+                <p className="font-playfair italic text-[#c24747] font-medium text-[11px] sm:text-[11.5px] md:text-xs leading-tight">
                   A Little Surprise For You!
                 </p>
-                <p className="font-sans text-[8px] sm:text-[9px] md:text-[10px] text-neutral-600 mt-0.5 leading-snug">
+                <p className="font-sans text-[9.5px] sm:text-[10px] text-neutral-600 mt-0.5 leading-snug">
                   A Surprise Gift Included With Your Order.
                 </p>
               </div>

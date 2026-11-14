@@ -82,7 +82,7 @@ async function ProductDetailContent({ params }: ProductPageProps) {
   const relatedProducts = getRelatedProducts(product, 8);
 
   return (
-    <main className="w-full min-h-screen">
+    <main className="w-full min-h-screen overflow-x-hidden overflow-x-clip">
       {/* 1. Main Product Top Section (Image Gallery + Details, Rating, Colors, Sizes, Actions) */}
       <ProductTopSection product={product} />
 

@@ -46,7 +46,7 @@ export default function RelatedProductsSwiper({
   const shouldLoop = products.length > 3;
 
   return (
-    <section className="w-full py-12 sm:py-16 select-none">
+    <section className="w-full py-12 sm:py-16 select-none overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Row: Title, Subtitle & Arrow Controls */}
         <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-4 mb-8 sm:mb-10 text-center sm:text-left">
@@ -91,7 +91,7 @@ export default function RelatedProductsSwiper({
         </div>
 
         {/* Swiper Carousel with Autoplay */}
-        <div className="relative w-full">
+        <div className="relative w-full overflow-hidden">
           <Swiper
             modules={[Autoplay]}
             autoplay={{
@@ -129,7 +129,7 @@ export default function RelatedProductsSwiper({
             onSlideChange={(swiper) => updateSnapInfo(swiper)}
             onBreakpoint={(swiper) => updateSnapInfo(swiper)}
             onResize={(swiper) => updateSnapInfo(swiper)}
-            className="w-full !overflow-visible sm:!overflow-hidden"
+            className="w-full overflow-hidden"
           >
             {products.map((relProduct, idx) => (
               <SwiperSlide key={`${relProduct.id}-${idx}`} className="!h-auto select-none">

@@ -56,7 +56,7 @@ export default function ProductDetailTabs({ product }: ProductDetailTabsProps) {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Navigation Tabs Header */}
-        <div className="flex items-center gap-8 sm:gap-12 border-b border-[#e5ddd7] pb-px select-none">
+        <div className="flex items-center gap-6 sm:gap-12 border-b border-[#e5ddd7] pb-px select-none overflow-x-auto scrollbar-none whitespace-nowrap">
           <button
             type="button"
             onClick={() => setActiveTab("details")}

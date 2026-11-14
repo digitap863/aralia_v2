@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${playfair.variable} h-full antialiased bg-white`}
+      className={`${dmSans.variable} ${playfair.variable} h-full antialiased bg-white overflow-x-hidden`}
     >
       <body className="min-h-full flex flex-col bg-white text-neutral-900 overflow-x-hidden font-sans">
         <Navbar />
