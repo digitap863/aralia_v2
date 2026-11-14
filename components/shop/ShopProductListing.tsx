@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
 import { SlidersHorizontal, ChevronDown, RotateCcw } from "lucide-react";
 import { getProducts, type ProductItem, type ProductColor } from "@/data";
 import ProductCard from "@/components/collection/ProductCard";
@@ -362,7 +363,7 @@ export default function ShopProductListing({
   };
 
   return (
-    <section className="w-full bg-[#fdfbf9] py-10 sm:py-14 md:py-16">
+    <section className="w-full bg-[#faf8f6] py-10 sm:py-14 md:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Grid: Left Filter Sidebar + Right Products Grid */}
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
@@ -483,22 +484,33 @@ export default function ShopProductListing({
                 ))}
               </div>
             ) : (
-              /* Empty state when no products match active filters */
-              <div className="py-16 sm:py-20 text-center bg-white rounded-2xl border border-[#ede5dd] p-8">
-                <p className="font-playfair text-lg sm:text-xl text-neutral-900">
-                  No products found
+              /* Empty state when no products match active filters or collection */
+              <div className="py-16 sm:py-20 text-center bg-white rounded-2xl border border-[#ede5dd] p-8 shadow-xs">
+                <p className="font-sans text-xl sm:text-2xl font-semibold text-neutral-900">
+                  No items found
                 </p>
-                <p className="font-sans text-xs sm:text-sm text-neutral-500 mt-1 max-w-sm mx-auto">
-                  No products matched your selected filters. Try broadening your criteria or reset filters.
+                <p className="font-sans text-xs sm:text-sm text-neutral-500 mt-2 max-w-sm mx-auto font-light">
+                  {hasActiveFilters
+                    ? "No products matched your selected filters. Try broadening your criteria or reset filters."
+                    : "There are currently no items available in this category or collection."}
                 </p>
-                <button
-                  type="button"
-                  onClick={handleClearAll}
-                  className="mt-5 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#241d1b] text-white text-xs font-sans font-medium hover:bg-[#382f2c] transition-colors cursor-pointer"
-                >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  <span>Reset All Filters</span>
-                </button>
+                {hasActiveFilters ? (
+                  <button
+                    type="button"
+                    onClick={handleClearAll}
+                    className="mt-5 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#241d1b] text-white text-xs font-sans font-medium hover:bg-black transition-colors cursor-pointer"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>Reset All Filters</span>
+                  </button>
+                ) : (
+                  <Link
+                    href="/shop"
+                    className="mt-5 inline-flex items-center gap-1.5 px-6 py-2.5 rounded-full bg-[#241d1b] text-white text-xs font-sans font-medium hover:bg-black transition-colors cursor-pointer shadow-xs"
+                  >
+                    <span>Browse All Products</span>
+                  </Link>
+                )}
               </div>
             )}
 

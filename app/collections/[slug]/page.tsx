@@ -81,14 +81,13 @@ async function CollectionDetailContent({
   const { slug } = await params;
   const details = getCollectionDetails(slug);
 
-  // Retrieve products for this collection, fallback to category or all products
+  // Retrieve products strictly for this collection, fallback to category if matching
   let products = getProductsByCollection(slug);
   if (products.length === 0) {
     products = getProductsByCategory(slug);
   }
-  if (products.length === 0) {
-    products = dummyProducts;
-  }
+  // If no items exist for this collection or category, keep products as an empty array []
+  // so the listing cleanly shows the "No items found" state instead of leaking other products.
 
   return (
     <main className="w-full min-h-screen bg-[#faf8f6] select-none">

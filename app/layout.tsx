@@ -1,17 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const playfair = Playfair_Display({
@@ -33,9 +30,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased bg-white`}
+      className={`${dmSans.variable} ${playfair.variable} h-full antialiased bg-white`}
     >
-      <body className="min-h-full flex flex-col bg-white text-neutral-900 overflow-x-hidden">
+      <body className="min-h-full flex flex-col bg-white text-neutral-900 overflow-x-hidden font-sans">
         <Navbar />
         {children}
         <Footer />
